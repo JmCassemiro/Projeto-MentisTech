@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* VARIÁVEIS */
+:root {
+    --bg-gradient: linear-gradient(135deg, #0b0f1a, #1a2235);
+    --primary: #5a6cff;
+    --secondary: #444;
+    --text-main: #ffffff;
+    --text-soft: rgba(255,255,255,0.7);
+    --text-light: rgba(255,255,255,0.5);
+    --card-bg: rgba(255,255,255,0.05);
+    --icon-bg: #cccccc;
+}
+
+/* BASE */
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-main);
+}
+
+/* ELEMENTOS REUTILIZÁVEIS */
+.btn {
+    padding: 10px 25px;
+    border: none;
+    background: var(--primary);
+    color: var(--text-main);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.secundario {
+    background: var(--secondary);
+}

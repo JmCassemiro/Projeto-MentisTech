@@ -1,0 +1,77 @@
+#header {
+    padding: 20px 40px;
+}
+
+#logo {
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+#hero {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+#hero h1 {
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+#hero h3 {
+    margin-top: 10px;
+    color: var(--text-soft);
+}
+
+#hero p {
+    margin-top: 20px;
+    color: var(--text-light);
+}
+
+#botoes {
+    margin-top: 30px;
+}
+
+section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 30px;
+    color: var(--text-soft);
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    background: var(--icon-bg);
+    border-radius: 6px;
+}
+
+#cta {
+    margin-top: 40px;
+}
+
+#footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-light);
+    font-size: 14px;
+}

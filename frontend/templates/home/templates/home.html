@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing</title>
+
+    <!-- GLOBAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
+    <!-- HOME -->
+    <link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}">
+</head>
+<body>
+
+<div id="tela">
+
+    <header id="header">
+        <div id="logo">LOGO</div>
+    </header>
+
+    <section id="hero">
+        <h1>TÍTULO</h1>
+        <h3>SUBTÍTULO</h3>
+        <p>Acompanhe seu bem-estar emocional com insights inteligentes</p>
+
+        <div id="botoes">
+            <button class="btn">BOTÃO</button>
+            <button class="btn secundario">LOGIN</button>
+        </div>
+    </section>
+
+    <section id="como">
+        <h2>COMO FUNCIONA</h2>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon"></div>
+                <p>Responda perguntas rápidas</p>
+            </div>
+
+            <div class="card">
+                <div class="icon"></div>
+                <p>Sistema avalia seu estado emocional</p>
+            </div>
+
+            <div class="card">
+                <div class="icon"></div>
+                <p>Veja seu nível de estresse ao longo do tempo</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="beneficios">
+        <h2>BENEFÍCIOS</h2>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon"></div>
+                <div>
+                    <strong>Identificação de estresse</strong>
+                    <p>Detecta sinais de estresse e ansiedade</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon"></div>
+                <div>
+                    <strong>Acompanhamento contínuo</strong>
+                    <p>Monitoramento regular do seu bem-estar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta">
+        <h3>CHAMADA FINAL</h3>
+        <button class="btn">BOTÃO</button>
+    </section>
+
+    <footer id="footer">
+        <p>© 2026 Seu Sistema | Privacidade | Termos | Contato</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
