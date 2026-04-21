@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from services.send_email import build_email_body, send_email
-from schemas.email_schemas import EmailRequest
+from app.services.send_email import build_email_body, send_email
+from app.schemas.email_schemas import EmailRequest
 
 email_router = APIRouter(prefix="/email", tags=["email"])
 

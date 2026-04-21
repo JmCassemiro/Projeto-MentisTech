@@ -2,7 +2,7 @@ import json
 
 from fastapi import APIRouter, status
 
-from schemas.forms_schemas import AnswerRequest
+from app.schemas.forms_schemas import AnswerRequest
 
 
 forms_router = APIRouter(prefix="/forms", tags=["forms"])
