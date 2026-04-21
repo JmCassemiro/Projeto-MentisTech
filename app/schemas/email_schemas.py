@@ -5,4 +5,5 @@ class EmailRequest(BaseModel):
     user_id: int
     user_name: str
     user_email: EmailStr
+    email_to: EmailStr
     message: str

@@ -13,8 +13,8 @@ def send_email_endpoint(request: EmailRequest):
         send_email(
             subject=request.subject,
             sender_email="inatelc317.mentistech.test@gmail.com",
-            email_to="thomasvictor2909@gmail.com",
             body=body,
+            email_to=request.email_to,
             reply_to=request.user_email,
         )
         return {"message": "Email enviado com sucesso!"}
