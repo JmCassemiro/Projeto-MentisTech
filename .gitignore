@@ -7,6 +7,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#ignorando as pastas doc e docs, pois elas podem conter arquivos de documentação que não são necessários para o controle de versão.
+doc
+docs
+
 # C extensions
 *.so
 
