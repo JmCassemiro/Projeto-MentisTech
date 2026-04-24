@@ -1,6 +1,6 @@
-from app.db.models.chamado_psicologico import ChamadoPsicologico
 from app.db.models.checkin import CheckIn
-from app.db.models.empresa import Empresa
-from app.db.models.usuario import Usuario
+from app.db.models.company import Company
+from app.db.models.psychological_request import PsychologicalRequest
+from app.db.models.user import User
 
-__all__ = ["Empresa", "Usuario", "CheckIn", "ChamadoPsicologico"]
+__all__ = ["Company", "User", "CheckIn", "PsychologicalRequest"]

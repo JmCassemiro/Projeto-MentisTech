@@ -21,26 +21,26 @@ class CheckIn(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "nivel_estresse >= 0 AND nivel_estresse <= 100", name="nivel_estresse_range"
+            "stress_level >= 0 AND stress_level <= 100", name="stress_level_range"
         ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    usuario_id: Mapped[int] = mapped_column(
+    user_id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey("usuario.id"),
+        ForeignKey("user.id"),
         nullable=False,
         index=True,
     )
-    data_hora: Mapped[datetime] = mapped_column(
+    submitted_at: Mapped[datetime] = mapped_column(
         DateTime,
         nullable=False,
         server_default=func.now(),
     )
-    humor_geral: Mapped[str] = mapped_column(String(50), nullable=False)
-    respostas_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    nivel_estresse: Mapped[int] = mapped_column(Integer, nullable=False)
-    insights_ia: Mapped[str] = mapped_column(Text, nullable=False)
+    overall_mood: Mapped[str] = mapped_column(String(50), nullable=False)
+    answers_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+    stress_level: Mapped[int] = mapped_column(Integer, nullable=False)
+    ai_insights: Mapped[str] = mapped_column(Text, nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -54,4 +54,4 @@ class CheckIn(Base):
         onupdate=func.now(),
     )
 
-    usuario = relationship("Usuario")
+    user = relationship("User")

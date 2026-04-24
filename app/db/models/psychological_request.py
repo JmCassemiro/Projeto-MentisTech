@@ -14,33 +14,33 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 
-class ChamadoPsicologico(Base):
-    __tablename__ = "chamado_psicologico"
+class PsychologicalRequest(Base):
+    __tablename__ = "psychological_request"
 
     __table_args__ = (
         CheckConstraint(
-            "status_envio IN ('pendente', 'enviado', 'erro')",
-            name="status_envio_valid",
+            "delivery_status IN ('pending', 'sent', 'error')",
+            name="delivery_status_valid",
         ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    usuario_id: Mapped[int] = mapped_column(
+    user_id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey("usuario.id"),
+        ForeignKey("user.id"),
         nullable=False,
         index=True,
     )
-    data_hora: Mapped[datetime] = mapped_column(
+    submitted_at: Mapped[datetime] = mapped_column(
         DateTime,
         nullable=False,
         server_default=func.now(),
     )
-    mensagem_opcional: Mapped[str | None] = mapped_column(Text, nullable=True)
-    status_envio: Mapped[str] = mapped_column(
+    optional_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    delivery_status: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
-        server_default="pendente",
+        server_default="pending",
     )
 
     created_at: Mapped[datetime] = mapped_column(
@@ -55,4 +55,4 @@ class ChamadoPsicologico(Base):
         onupdate=func.now(),
     )
 
-    usuario = relationship("Usuario")
+    user = relationship("User")

@@ -6,25 +6,25 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 
-class Usuario(Base):
-    __tablename__ = "usuario"
+class User(Base):
+    __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    empresa_id: Mapped[int] = mapped_column(
+    company_id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey("empresa.id"),
+        ForeignKey("company.id"),
         nullable=False,
         index=True,
     )
-    nome_completo: Mapped[str] = mapped_column(String(150), nullable=False)
-    email_corporativo: Mapped[str] = mapped_column(
+    full_name: Mapped[str] = mapped_column(String(150), nullable=False)
+    corporate_email: Mapped[str] = mapped_column(
         String(255),
         nullable=False,
         unique=True,
         index=True,
     )
-    cargo: Mapped[str] = mapped_column(String(120), nullable=False)
-    senha_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    role: Mapped[str] = mapped_column(String(120), nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -38,4 +38,4 @@ class Usuario(Base):
         onupdate=func.now(),
     )
 
-    empresa = relationship("Empresa")
+    company = relationship("Company")
