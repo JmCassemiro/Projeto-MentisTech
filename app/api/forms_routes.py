@@ -8,6 +8,7 @@ from app.core.dependencies import get_db
 from app.schemas.forms_schemas import AnswerRequest
 
 from app.db.models.checkin import CheckIn
+from app.services.ai_services import analyze_checkin
 
 forms_router = APIRouter(prefix="/forms", tags=["forms"])
 
@@ -23,14 +24,16 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
     try:
         answer_quantity = len(data.answers)
         total_value_answers = sum(answer.value for answer in data.answers)
-        overall_mood = total_value_answers / answer_quantity
+        avarage_mood = total_value_answers / answer_quantity
+
+        ai_analysis = analyze_checkin(data.answers)
         
         checkin = CheckIn(
             user_id=data.user_id,
-            overall_mood=str(overall_mood),
+            overall_mood=ai_analysis["overall_mood"],
             answers_json=[answer.model_dump() for answer in data.answers],
-            stress_level=(overall_mood * 10),
-            ai_insights="Temporary AI insight",
+            stress_level=(avarage_mood * 10),
+            ai_insights=ai_analysis["ai_insights"],
             submitted_at=data.created_at,
         )
 
