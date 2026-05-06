@@ -12,7 +12,7 @@
   {
     "id": 3,
     "question": "Há aspectos da sua vida pessoal que estão interferindo negativamente no seu trabalho ou que você precise de um apoio especial?",
-    "type": "text"
+    "type": "scale"
   },
   {
     "id": 4,
@@ -46,7 +46,7 @@
   },
   {
     "id": 10,
-    "question": "De forma geral, como você se sente com relação à LEVTY neste mês?",
+    "question": "De forma geral, como você se sente com relação à empresa neste mês?",
     "type": "scale"
   }
 ]
