@@ -6,6 +6,7 @@ from app.api.home_routes import home_router
 from app.api.hero_routes import hero_router
 from app.api.forms_routes import forms_router
 from app.api.email_routes import email_router
+from app.api.questions_routes import questions_router
 
 
 def create_app():
@@ -23,5 +24,6 @@ def create_app():
     app.include_router(hero_router)
     app.include_router(forms_router)
     app.include_router(email_router)
+    app.include_router(questions_router)
 
     return app
