@@ -64,3 +64,24 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
 @forms_router.get("history/{user_id}")
 def history_by_user():
     pass
+
+@forms_router.get("next-checkin/{user_id}")
+def next_checkin(user_id: int, db: Session = Depends(get_db)):
+    try:
+        last_checkin = db.query(CheckIn).filter(
+            CheckIn.user_id == user_id
+        ).order_by(CheckIn.created_at.desc()).first()
+        
+        if not last_checkin:
+            raise HTTPException(
+                status_code=404,
+                detail="Não foram encontrados check-ins para este usuário."
+            )
+        
+        return last_checkin
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Database error: {str(e)}"
+        )
