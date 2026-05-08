@@ -19,5 +19,11 @@ def stress_by_role():
 def questions_avarage():
     pass
 
+@analytics_router.get(f"mood-by-user/{user_id}")
+def mood_by_user():
+    pass
 
+@analytics_router.get(f"mood-by-user-monthly/{user_id}")
+def mood_by_user_monthly():
+    pass
 

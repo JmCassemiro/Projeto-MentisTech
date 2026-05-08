@@ -23,13 +23,17 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
     try:
         answer_quantity = len(data.answers)
         total_value_answers = sum(answer.value for answer in data.answers)
-        overall_mood = total_value_answers / answer_quantity
-        
+        mood_avarage = total_value_answers / answer_quantity
+
+        rounded_mood = round(mood_avarage)
+        moods = ["Risco", "Atenção", "Satisfatório", "Bom", "Ótimo"]
+        overall_mood = moods[rounded_mood - 1]
+
         checkin = CheckIn(
             user_id=data.user_id,
-            overall_mood=str(overall_mood),
+            overall_mood=overall_mood,
             answers_json=[answer.model_dump() for answer in data.answers],
-            stress_level=(overall_mood * 10),
+            stress_level=(mood_avarage * 10),
             ai_insights="Temporary AI insight",
             submitted_at=data.created_at,
         )
@@ -55,6 +59,7 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
             status_code=500,
             detail=f"Unexpected error: {str(e)}",
         )
+
 
 @forms_router.get(f"history/{user_id}")
 def history_by_user():
