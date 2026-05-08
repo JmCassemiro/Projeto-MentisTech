@@ -86,22 +86,24 @@
 
                 <div class="bloco">
 
-                    <form class="contato-form">
+                    <form class="contato-form" id="contato-form">
                         <div class="campo">
                             <label for="nome">NOME</label>
-                            <input type="text" id="nome" name="nome">
+                            <input type="text" id="nome" name="nome" required>
                         </div>
 
                         <div class="campo">
                             <label for="email">EMAIL</label>
-                            <input type="email" id="email" name="email">
+                            <input type="email" id="email" name="email" required>
                         </div>
 
                         <div class="campo">
                             <label for="duvida">DÚVIDA</label>
                             <textarea id="duvida" name="duvida" rows="4"
-                                placeholder="Descreva sua dúvida ou solicitação"></textarea>
+                                placeholder="Descreva sua dúvida ou solicitação" required></textarea>
                         </div>
+
+                        <div class="contato-feedback" id="contato-feedback" aria-live="polite"></div>
 
                         <button class="btn secundario enviar" type="submit">ENVIAR MENSAGEM</button>
                     </form>
@@ -110,11 +112,61 @@
         </main>
 
         <footer id="dashboard-footer">
-            <p>&copy; 2026 Seu Sistema | Privacidade | Termos | Contato</p>
+            <p>&copy; 2026 Mentistech</p>
         </footer>
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contatoForm = document.getElementById('contato-form');
+            const feedback = document.getElementById('contato-feedback');
+
+            contatoForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                feedback.textContent = 'Enviando mensagem...';
+                feedback.style.color = 'var(--text-main)';
+
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const duvida = document.getElementById('duvida').value.trim();
+
+                const payload = {
+                    subject: 'Contato pelo painel',
+                    user_id: 0,
+                    user_name: nome,
+                    user_email: email,
+                    email_to: 'inatelc317.mentistech.test@gmail.com',
+                    message: duvida
+                };
+
+                try {
+                    const response = await fetch('/email/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        feedback.textContent = data.detail ? `Erro: ${data.detail}` : 'Erro ao enviar mensagem.';
+                        feedback.style.color = '#b71c1c';
+                        return;
+                    }
+
+                    feedback.textContent = 'Mensagem enviada com sucesso!';
+                    feedback.style.color = '#166534';
+                    contatoForm.reset();
+                } catch (error) {
+                    console.error('Erro enviar email:', error);
+                    feedback.textContent = 'Erro ao enviar mensagem. Tente novamente.';
+                    feedback.style.color = '#b71c1c';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

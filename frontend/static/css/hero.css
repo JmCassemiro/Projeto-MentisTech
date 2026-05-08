@@ -222,6 +222,13 @@ h2 {
     gap: 14px;
 }
 
+.contato-feedback {
+    min-height: 24px;
+    color: var(--text-main);
+    font-size: 14px;
+    font-weight: 700;
+}
+
 .campo {
     display: flex;
     flex-direction: column;
