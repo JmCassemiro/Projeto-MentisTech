@@ -41,8 +41,7 @@ class AuthService:
             company_id=company.id,
             full_name=request.name.strip(),
             corporate_email=email,
-            role=request.role.strip(),
-            # team=request.team.strip(),
+            role=DEFAULT_USER_ROLE,
             password_hash=get_password_hash(request.password),
         )
 

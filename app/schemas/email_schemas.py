@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr
 
 class EmailRequest(BaseModel):
     subject: str
@@ -7,8 +7,3 @@ class EmailRequest(BaseModel):
     user_email: EmailStr
     email_to: EmailStr
     message: str
-
-    @field_validator("subject", "user_name", "message")
-    @classmethod
-    def strip_text_fields(cls, value: str) -> str:
-        return value.strip()

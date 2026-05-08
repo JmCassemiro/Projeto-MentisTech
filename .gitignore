@@ -73,9 +73,6 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
-# Local database file
-app.db
-
 # Scrapy stuff:
 .scrapy
 

@@ -1,14 +1,60 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    let perguntas = [];
-
-    try {
-        const response = await fetch('/forms/questions');
-        perguntas = await response.json();
-    } catch (error) {
-        console.error('Erro ao carregar perguntas:', error);
-        // Fallback or error handling
-        perguntas = [];
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const perguntas = [
+        {
+            titulo: "Como você está se sentindo hoje?",
+            opcoes: [
+                { valor: "feliz", rotulo: "Feliz", emoji: ":)" },
+                { valor: "neutro", rotulo: "Neutro", emoji: ":|" },
+                { valor: "triste", rotulo: "Triste", emoji: ":(" },
+                { valor: "estressado", rotulo: "Estressado", emoji: ">:(" }
+            ]
+        },
+        {
+            titulo: "Como está seu nível de energia agora?",
+            opcoes: [
+                { valor: "muito_alta", rotulo: "Muito alta", emoji: ":D" },
+                { valor: "boa", rotulo: "Boa", emoji: ":)" },
+                { valor: "baixa", rotulo: "Baixa", emoji: ":/" },
+                { valor: "muito_baixa", rotulo: "Muito baixa", emoji: ":(" }
+            ]
+        },
+        {
+            titulo: "Como foi sua qualidade de sono recentemente?",
+            opcoes: [
+                { valor: "otima", rotulo: "Ótima", emoji: ":)" },
+                { valor: "regular", rotulo: "Regular", emoji: ":|" },
+                { valor: "ruim", rotulo: "Ruim", emoji: ":/" },
+                { valor: "muito_ruim", rotulo: "Muito ruim", emoji: ":(" }
+            ]
+        },
+        {
+            titulo: "Como você percebe seu nível de estresse hoje?",
+            opcoes: [
+                { valor: "baixo", rotulo: "Baixo", emoji: ":)" },
+                { valor: "medio", rotulo: "Médio", emoji: ":|" },
+                { valor: "alto", rotulo: "Alto", emoji: ":/" },
+                { valor: "muito_alto", rotulo: "Muito alto", emoji: ">:(" }
+            ]
+        },
+        {
+            titulo: "Como está sua concentração nas tarefas?",
+            opcoes: [
+                { valor: "excelente", rotulo: "Excelente", emoji: ":D" },
+                { valor: "boa", rotulo: "Boa", emoji: ":)" },
+                { valor: "instavel", rotulo: "Instável", emoji: ":/" },
+                { valor: "dificil", rotulo: "Muito difícil", emoji: ":(" }
+            ]
+        },
+        {
+            titulo: "Como você descreveria seu bem-estar geral hoje?",
+            opcoes: [
+                { valor: "muito_bem", rotulo: "Muito bem", emoji: ":D" },
+                { valor: "bem", rotulo: "Bem", emoji: ":)" },
+                { valor: "mais_ou_menos", rotulo: "Mais ou menos", emoji: ":|" },
+                { valor: "mal", rotulo: "Mal", emoji: ":(" }
+            ]
+        }
+    ];
 
     let perguntaAtual = 0;
     const respostas = {};
@@ -22,15 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const botaoVoltar = document.getElementById("botao-voltar");
     const botaoProximo = document.getElementById("botao-proximo");
     const formulario = document.getElementById("questionario-form");
-    const progressoContainer = document.getElementById("progresso");
-
-    // Generate progress bars dynamically
-    progressoContainer.innerHTML = '';
-    for (let i = 0; i < perguntas.length; i++) {
-        const span = document.createElement('span');
-        progressoContainer.appendChild(span);
-    }
-    const barrasProgresso = Array.from(progressoContainer.querySelectorAll('span'));
+    const barrasProgresso = Array.from(document.querySelectorAll("#progresso span"));
 
     const modalOverlay = document.getElementById("modal-overlay");
     const modalLabel = document.getElementById("modal-label");
@@ -93,34 +131,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     function renderizarPergunta() {
-        if (perguntas.length === 0) {
-            perguntaTitulo.textContent = "Erro ao carregar perguntas.";
-            return;
-        }
-
         const pergunta = perguntas[perguntaAtual];
-        const respostaAtual = respostas[pergunta.id];
+        const respostaAtual = respostas[perguntaAtual];
 
         passoAtual.textContent = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}`;
-        perguntaTitulo.textContent = pergunta.question;
+        perguntaTitulo.textContent = pergunta.titulo;
 
-        if (pergunta.type === "scale") {
-            const labels = ["Discordo totalmente", "Discordo", "Neutro", "Concordo", "Concordo totalmente"];
-            opcoesContainer.innerHTML = labels.map((label, index) => {
-                const value = index + 1;
-                return `
-                    <label class="opcao">
-                        <input type="radio" name="resposta" value="${value}" ${respostaAtual == value ? "checked" : ""}>
-                        <span class="opcao-card">
-                            <strong>${value} - ${label}</strong>
-                        </span>
-                    </label>
-                `;
-            }).join("");
-        } else {
-            // Fallback for other types
-            opcoesContainer.innerHTML = "<p>Tipo de pergunta não suportado.</p>";
-        }
+        opcoesContainer.innerHTML = pergunta.opcoes.map((opcao) => `
+            <label class="opcao">
+                <input type="radio" name="resposta" value="${opcao.valor}" ${respostaAtual === opcao.valor ? "checked" : ""}>
+                <span class="opcao-card">
+                    <span class="emoji">${opcao.emoji}</span>
+                    <strong>${opcao.rotulo}</strong>
+                </span>
+            </label>
+        `).join("");
 
         barrasProgresso.forEach((barra, indice) => {
             barra.className = "";
@@ -138,8 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     opcoesContainer.addEventListener("change", (event) => {
         if (event.target.name === "resposta") {
-            const pergunta = perguntas[perguntaAtual];
-            respostas[pergunta.id] = parseInt(event.target.value);
+            respostas[perguntaAtual] = event.target.value;
         }
     });
 
@@ -170,8 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        const pergunta = perguntas[perguntaAtual];
-        respostas[pergunta.id] = parseInt(selecionada.value);
+        respostas[perguntaAtual] = selecionada.value;
 
         if (perguntaAtual === perguntas.length - 1) {
             abrirModal({
@@ -181,49 +204,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 textoConfirmar: "Salvar e enviar",
                 textoCancelar: "Revisar",
                 mostrarCancelar: true,
-                onConfirm: async () => {
-                    try {
-                        const answers = perguntas.map(pergunta => ({
-                            question_id: pergunta.id,
-                            value: respostas[pergunta.id] || 0
-                        }));
-                        const payload = {
-                            user_id: 1, // TODO: get from session or input
-                            answers: answers,
-                            created_at: new Date().toISOString()
-                        };
-                        const response = await fetch('/forms/submit', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(payload)
-                        });
-                        if (response.ok) {
-                            abrirModal({
-                                label: "DADOS ENVIADOS",
-                                titulo: "Respostas enviadas com sucesso",
-                                texto: "Os dados foram salvos e enviados para as psicólogas da empresa.",
-                                textoConfirmar: "Voltar ao painel",
-                                mostrarCancelar: false,
-                                onConfirm: () => {
-                                    window.location.href = heroUrl;
-                                }
-                            });
-                        } else {
-                            throw new Error('Erro no envio');
+                onConfirm: () => {
+                    abrirModal({
+                        label: "DADOS ENVIADOS",
+                        titulo: "Respostas enviadas com sucesso",
+                        texto: "Os dados foram salvos e enviados para as psicólogas da empresa.",
+                        textoConfirmar: "Voltar ao painel",
+                        mostrarCancelar: false,
+                        onConfirm: () => {
+                            window.location.href = heroUrl;
                         }
-                    } catch (error) {
-                        console.error('Erro ao enviar:', error);
-                        abrirModal({
-                            label: "ERRO",
-                            titulo: "Erro ao enviar respostas",
-                            texto: "Ocorreu um erro ao enviar suas respostas. Tente novamente.",
-                            textoConfirmar: "OK",
-                            mostrarCancelar: false,
-                            onConfirm: fecharModal
-                        });
-                    }
+                    });
                 }
             });
             return;

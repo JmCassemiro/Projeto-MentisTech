@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,248 +10,70 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <div id="tela-auth">
+<div id="tela-auth">
 
-        <header id="auth-header">
-            <div id="logo">
-                <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
-            </div>
+    <header id="auth-header">
+        <div id="logo">
+            <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
+        </div>
 
-            <a href="{{url_for('get_home')}}" class="voltar">VOLTAR</a>
-        </header>
+        <a href="{{url_for('get_home')}}" class="voltar">VOLTAR</a>
+    </header>
 
-        <main id="auth-main">
-            <section class="auth-card" id="auth-card">
-                <div class="auth-switch" role="tablist" aria-label="Alternar entre criar conta e login">
-                    <button class="switch-btn active" type="button" data-mode="register" aria-selected="true">Criar
-                        conta</button>
-                    <button class="switch-btn" type="button" data-mode="login" aria-selected="false">Entrar</button>
+    <main id="auth-main">
+        <section class="auth-card" id="cadastro">
+            <h1>CRIAR CONTA</h1>
+
+            <form class="auth-form" action="/initial" method="get">
+                <div class="campo">
+                    <label for="nome">NOME</label>
+                    <input type="text" id="nome" name="nome">
                 </div>
 
-                <div class="auth-panel auth-panel--register" id="register-panel" role="tabpanel">
-                    <h1>CRIAR CONTA</h1>
-
-                    <form class="auth-form" id="register-form">
-                        <div class="campo">
-                            <label for="nome">NOME</label>
-                            <input type="text" id="nome" name="nome" autocomplete="name" required>
-                        </div>
-
-                        <div class="campo">
-                            <label for="cargo">CARGO</label>
-                            <input type="text" id="cargo" name="cargo">
-                        </div>
-
-                        <div class="campo">
-                            <label for="time">TIME</label>
-                            <input type="text" id="time" name="time">
-                        </div>
-
-                        <div class="campo">
-                            <label for="cadastro-email">EMAIL</label>
-                            <input type="email" id="cadastro-email" name="email" autocomplete="email" required>
-                        </div>
-
-                        <div class="campo">
-                            <label for="cadastro-senha">SENHA</label>
-                            <input type="password" id="cadastro-senha" name="senha" autocomplete="new-password"
-                                minlength="6" required>
-                        </div>
-
-                        <div class="campo">
-                            <label for="confirmar-senha">CONFIRMAR SENHA</label>
-                            <input type="password" id="confirmar-senha" name="confirmar-senha"
-                                autocomplete="new-password" minlength="6" required>
-                        </div>
-
-                        <p class="auth-message" id="register-message" aria-live="polite"></p>
-
-                        <button class="btn" type="submit">CADASTRAR</button>
-                    </form>
+                <div class="campo">
+                    <label for="cadastro-email">EMAIL</label>
+                    <input type="email" id="cadastro-email" name="email">
                 </div>
 
-                <div class="auth-panel auth-panel--login" id="login-panel" role="tabpanel" hidden>
-                    <h1>ENTRAR</h1>
-
-                    <form class="auth-form" id="login-form">
-                        <div class="campo">
-                            <label for="login-email">EMAIL</label>
-                            <input type="email" id="login-email" name="email" autocomplete="email" required>
-                        </div>
-
-                        <div class="campo">
-                            <label for="login-senha">SENHA</label>
-                            <input type="password" id="login-senha" name="senha" autocomplete="current-password"
-                                required>
-                        </div>
-
-                        <p class="auth-message" id="login-message" aria-live="polite"></p>
-
-                        <button class="btn" type="submit">ENTRAR</button>
-                    </form>
+                <div class="campo">
+                    <label for="cadastro-senha">SENHA</label>
+                    <input type="password" id="cadastro-senha" name="senha">
                 </div>
-            </section>
-        </main>
 
-        <footer id="auth-footer">
-            <p>&copy; 2026 Mentistech</p>
-        </footer>
+                <div class="campo">
+                    <label for="confirmar-senha">CONFIRMAR SENHA</label>
+                    <input type="password" id="confirmar-senha" name="confirmar-senha">
+                </div>
 
-    </div>
+                <button class="btn" type="submit">CADASTRAR</button>
+            </form>
+        </section>
+        <section class="auth-card">
+            <h1>LOGIN</h1>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const switchButtons = document.querySelectorAll('.switch-btn');
-            const registerPanel = document.getElementById('register-panel');
-            const loginPanel = document.getElementById('login-panel');
-            const registerForm = document.getElementById('register-form');
-            const loginForm = document.getElementById('login-form');
-            const registerMessage = document.getElementById('register-message');
-            const loginMessage = document.getElementById('login-message');
+            <form class="auth-form" action="/initial" method="get">
+                <div class="campo">
+                    <label for="login-email">EMAIL</label>
+                    <input type="email" id="login-email" name="email">
+                </div>
 
-            const messages = {
-                'Email already registered': 'Este email ja esta cadastrado.',
-                'Invalid credentials': 'Email ou senha invalidos.',
-                'password and confirm_password must match': 'As senhas precisam ser iguais.'
-            };
+                <div class="campo">
+                    <label for="login-senha">SENHA</label>
+                    <input type="password" id="login-senha" name="senha">
+                </div>
 
-            function setMode(mode) {
-                switchButtons.forEach(btn => {
-                    const active = btn.dataset.mode === mode;
-                    btn.classList.toggle('active', active);
-                    btn.setAttribute('aria-selected', active ? 'true' : 'false');
-                });
+                <button class="btn" type="submit">ENTRAR</button>
+            </form>
+        </section>
+    </main>
 
-                if (mode === 'login') {
-                    loginPanel.hidden = false;
-                    registerPanel.hidden = true;
-                } else {
-                    loginPanel.hidden = true;
-                    registerPanel.hidden = false;
-                }
-            }
+    <footer id="auth-footer">
+        <p>&copy; 2026 Seu Sistema | Privacidade | Termos | Contato</p>
+    </footer>
 
-            function setMessage(element, text, type = 'error') {
-                element.textContent = text;
-                element.dataset.type = type;
-            }
-
-            function getErrorMessage(error) {
-                if (!error) {
-                    return 'Nao foi possivel concluir a operacao.';
-                }
-
-                if (typeof error.detail === 'string') {
-                    return messages[error.detail] || error.detail;
-                }
-
-                if (Array.isArray(error.detail) && error.detail.length > 0) {
-                    const firstError = error.detail[0];
-                    const message = firstError.msg || firstError.message;
-                    return messages[message] || message || 'Verifique os dados preenchidos.';
-                }
-
-                return 'Verifique os dados preenchidos.';
-            }
-
-            async function requestJson(url, data) {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json().catch(() => null);
-
-                if (!response.ok) {
-                    throw result;
-                }
-
-                return result;
-            }
-
-            function saveSession(tokenData, userEmail) {
-                localStorage.setItem('access_token', tokenData.access_token);
-                localStorage.setItem('token_type', tokenData.token_type || 'bearer');
-                localStorage.setItem('user_email', userEmail);
-            }
-
-            async function login(email, password) {
-                const tokenData = await requestJson('/auth/login', {
-                    email,
-                    password
-                });
-                saveSession(tokenData, email);
-                window.location.href = '/initial';
-            }
-
-            switchButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    setMode(button.dataset.mode);
-                });
-            });
-
-            registerForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const submitButton = registerForm.querySelector('button[type="submit"]');
-                const name = document.getElementById('nome').value.trim();
-                const role = document.getElementById('cargo').value.trim();
-                const team = document.getElementById('time').value.trim();
-                const email = document.getElementById('cadastro-email').value.trim();
-                const password = document.getElementById('cadastro-senha').value;
-                const confirmPassword = document.getElementById('confirmar-senha').value;
-
-                if (password !== confirmPassword) {
-                    setMessage(registerMessage, 'As senhas precisam ser iguais.');
-                    return;
-                }
-
-                submitButton.disabled = true;
-                setMessage(registerMessage, 'Criando sua conta...', 'info');
-
-                try {
-                    await requestJson('/auth/register', {
-                        name,
-                        email,
-                        password,
-                        confirm_password: confirmPassword,
-                        role,
-                        team
-                    });
-                    setMessage(registerMessage, 'Conta criada. Entrando...', 'success');
-                    await login(email, password);
-                } catch (error) {
-                    setMessage(registerMessage, getErrorMessage(error));
-                    submitButton.disabled = false;
-                }
-            });
-
-            loginForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const submitButton = loginForm.querySelector('button[type="submit"]');
-                const email = document.getElementById('login-email').value.trim();
-                const password = document.getElementById('login-senha').value;
-
-                submitButton.disabled = true;
-                setMessage(loginMessage, 'Entrando...', 'info');
-
-                try {
-                    await login(email, password);
-                } catch (error) {
-                    setMessage(loginMessage, getErrorMessage(error));
-                    submitButton.disabled = false;
-                }
-            });
-        });
-    </script>
+</div>
 
 </body>
-
 </html>

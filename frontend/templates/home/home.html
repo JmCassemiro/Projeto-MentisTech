@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,76 +10,75 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <div id="tela">
+<div id="tela">
 
-        <header id="header">
-            <div id="logo">
-                <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
+    <header id="header">
+        <div id="logo">
+            <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
+        </div>
+    </header>
+
+    <section id="hero">
+        <span class="tag">Cuidado emocional inteligente</span>
+        <h1>MentisTech</h1>
+        <p>Acompanhe seu bem-estar emocional com insights inteligentes e uma rotina simples de autocuidado.</p>
+
+        <div id="botoes">
+            <a class="btn" href="{{ url_for('get_autheticate') }}">Entrar</a>
+            <a class="btn secundario" href="{{ url_for('get_autheticate') }}">LOGIN</a>
+        </div>
+    </section>
+
+    <section id="como-funciona">
+        <h2>COMO FUNCIONA</h2>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon"></div>
+                <p>Responda perguntas rápidas</p>
             </div>
-        </header>
 
-        <section id="hero">
-            <span class="tag">Cuidado emocional inteligente</span>
-            <h1>MentisTech</h1>
-            <p>Acompanhe seu bem-estar emocional com insights inteligentes e uma rotina simples de autocuidado.</p>
-
-            <div id="botoes">
-                <a class="btn" href="{{ url_for('get_autheticate') }}">Entrar</a>
+            <div class="card">
+                <div class="icon"></div>
+                <p>Sistema avalia seu estado emocional</p>
             </div>
-        </section>
 
-        <section id="como-funciona">
-            <h2>COMO FUNCIONA</h2>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="icon"></div>
-                    <p>Responda perguntas rápidas</p>
-                </div>
-
-                <div class="card">
-                    <div class="icon"></div>
-                    <p>Sistema avalia seu estado emocional</p>
-                </div>
-
-                <div class="card">
-                    <div class="icon"></div>
-                    <p>Veja seu nível de estresse ao longo do tempo</p>
-                </div>
+            <div class="card">
+                <div class="icon"></div>
+                <p>Veja seu nível de estresse ao longo do tempo</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="beneficios">
-            <h2>BENEFÍCIOS</h2>
+    <section id="beneficios">
+        <h2>BENEFÍCIOS</h2>
 
-            <div class="cards">
-                <div class="card">
-                    <div class="icon"></div>
-                    <div>
-                        <strong>Identificação de estresse</strong>
-                        <p>Detecta sinais de estresse e ansiedade antes que se intensifiquem.</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="icon"></div>
-                    <div>
-                        <strong>Acompanhamento contínuo</strong>
-                        <p>Monitoramento regular do seu bem-estar emocional.</p>
-                    </div>
+        <div class="cards">
+            <div class="card">
+                <div class="icon"></div>
+                <div>
+                    <strong>Identificação de estresse</strong>
+                    <p>Detecta sinais de estresse e ansiedade antes que se intensifiquem.</p>
                 </div>
             </div>
-        </section>
 
-        <footer id="footer">
-            <p>© 2026 Mentistech</p>
-        </footer>
+            <div class="card">
+                <div class="icon"></div>
+                <div>
+                    <strong>Acompanhamento contínuo</strong>
+                    <p>Monitoramento regular do seu bem-estar emocional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <footer id="footer">
+        <p>© 2026 Seu Sistema | Privacidade | Termos | Contato</p>
+    </footer>
+
+</div>
 
 </body>
-
 </html>
