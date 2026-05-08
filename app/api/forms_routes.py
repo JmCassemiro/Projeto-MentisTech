@@ -55,3 +55,7 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
             status_code=500,
             detail=f"Unexpected error: {str(e)}",
         )
+
+@forms_router.get(f"history/{user_id}")
+def history_by_user():
+    pass
