@@ -61,6 +61,6 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
         )
 
 
-@forms_router.get(f"history/{user_id}")
+@forms_router.get("history/{user_id}")
 def history_by_user():
     pass
