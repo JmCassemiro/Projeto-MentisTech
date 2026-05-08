@@ -208,6 +208,32 @@ body {
     margin-top: 4px;
 }
 
+.auth-form .btn:disabled {
+    cursor: wait;
+    opacity: 0.72;
+}
+
+.auth-message {
+    min-height: 18px;
+    margin: -2px 0 0;
+    color: #b42318;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.auth-message:empty {
+    display: none;
+}
+
+.auth-message[data-type="info"] {
+    color: var(--text-soft);
+}
+
+.auth-message[data-type="success"] {
+    color: #13795b;
+}
+
 .link-auth {
     width: fit-content;
     margin: 18px auto 0;

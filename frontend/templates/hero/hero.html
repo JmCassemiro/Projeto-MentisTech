@@ -30,7 +30,7 @@
         <main id="dashboard-main">
             <section class="boas-vindas">
                 <p class="topo-label">BOAS-VINDAS</p>
-                <h1>Olá, [Nome do usuário]</h1>
+                <h1>Olá, <span id="primeiro-nome">[seu nome]</span></h1>
                 <p class="texto-suporte">Seja bem-vindo de volta ao sistema</p>
                 <a class="btn secundario" href="/questions">COMEÇAR CHECK-IN</a>
             </section>
@@ -121,6 +121,43 @@
         document.addEventListener('DOMContentLoaded', () => {
             const contatoForm = document.getElementById('contato-form');
             const feedback = document.getElementById('contato-feedback');
+            const primeiroNome = document.getElementById('primeiro-nome');
+            const nomeInput = document.getElementById('nome');
+            const emailInput = document.getElementById('email');
+
+            function getFirstName(fullName) {
+                return fullName.trim().split(/\s+/)[0] || '[seu nome]';
+            }
+
+            async function loadCurrentUser() {
+                const accessToken = localStorage.getItem('access_token');
+                const tokenType = localStorage.getItem('token_type') || 'bearer';
+
+                if (!accessToken) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/usuarios/me', {
+                        headers: {
+                            Authorization: `${tokenType} ${accessToken}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        return;
+                    }
+
+                    const user = await response.json();
+                    primeiroNome.textContent = getFirstName(user.name);
+                    nomeInput.value = user.name || '';
+                    emailInput.value = user.email || '';
+                } catch (error) {
+                    console.error('Erro ao carregar usuario:', error);
+                }
+            }
+
+            loadCurrentUser();
 
             contatoForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
