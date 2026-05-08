@@ -41,7 +41,7 @@
                 <div class="resumo-grid">
                     <article class="info-card">
                         <div class="card-topo">
-                            <span class="card-icone"></span>
+                            <span class="card-icone card-icone--nivel"></span>
                             <small>NÍVEL ATUAL</small>
                         </div>
                         <strong>Moderado</strong>
@@ -49,7 +49,7 @@
 
                     <article class="info-card">
                         <div class="card-topo">
-                            <span class="card-icone"></span>
+                            <span class="card-icone card-icone--checkins"></span>
                             <small>CHECK-INS</small>
                         </div>
                         <strong>12</strong>
@@ -58,7 +58,7 @@
 
                     <article class="info-card">
                         <div class="card-topo">
-                            <span class="card-icone"></span>
+                            <span class="card-icone card-icone--tendencia"></span>
                             <small>TENDÊNCIA</small>
                         </div>
                         <strong>Em estabilidade</strong>
@@ -66,7 +66,7 @@
 
                     <article class="info-card">
                         <div class="card-topo">
-                            <span class="card-icone alerta"></span>
+                            <span class="card-icone card-icone--proximo"></span>
                             <small>PRÓXIMO</small>
                         </div>
                         <strong>Amanhã</strong>
@@ -87,16 +87,6 @@
                 <div class="bloco">
 
                     <form class="contato-form" id="contato-form">
-                        <div class="campo">
-                            <label for="nome">NOME</label>
-                            <input type="text" id="nome" name="nome" required>
-                        </div>
-
-                        <div class="campo">
-                            <label for="email">EMAIL</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-
                         <div class="campo">
                             <label for="duvida">DÚVIDA</label>
                             <textarea id="duvida" name="duvida" rows="4"
@@ -122,8 +112,46 @@
             const contatoForm = document.getElementById('contato-form');
             const feedback = document.getElementById('contato-feedback');
             const primeiroNome = document.getElementById('primeiro-nome');
-            const nomeInput = document.getElementById('nome');
-            const emailInput = document.getElementById('email');
+            const infoCards = document.querySelectorAll('.info-card');
+            let currentUser = null;
+
+            function setupTiltCards() {
+                const maxTilt = 15;
+
+                infoCards.forEach((card) => {
+                    let animationFrame = null;
+
+                    card.addEventListener('mousemove', (event) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = (event.clientX - rect.left) / rect.width;
+                        const y = (event.clientY - rect.top) / rect.height;
+                        const tiltX = (y - 0.5) * maxTilt;
+                        const tiltY = (0.5 - x) * maxTilt;
+
+                        if (animationFrame) {
+                            cancelAnimationFrame(animationFrame);
+                        }
+
+                        animationFrame = requestAnimationFrame(() => {
+                            card.classList.add('is-tilting');
+                            card.style.setProperty('--tilt-x', `${tiltX}deg`);
+                            card.style.setProperty('--tilt-y', `${tiltY}deg`);
+                            card.style.setProperty('--tilt-scale', '1.05');
+                        });
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        if (animationFrame) {
+                            cancelAnimationFrame(animationFrame);
+                        }
+
+                        card.classList.remove('is-tilting');
+                        card.style.setProperty('--tilt-x', '0deg');
+                        card.style.setProperty('--tilt-y', '0deg');
+                        card.style.setProperty('--tilt-scale', '1');
+                    });
+                });
+            }
 
             function getFirstName(fullName) {
                 return fullName.trim().split(/\s+/)[0] || '[seu nome]';
@@ -149,30 +177,34 @@
                     }
 
                     const user = await response.json();
+                    currentUser = user;
                     primeiroNome.textContent = getFirstName(user.name);
-                    nomeInput.value = user.name || '';
-                    emailInput.value = user.email || '';
                 } catch (error) {
                     console.error('Erro ao carregar usuario:', error);
                 }
             }
 
             loadCurrentUser();
+            setupTiltCards();
 
             contatoForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
                 feedback.textContent = 'Enviando mensagem...';
                 feedback.style.color = 'var(--text-main)';
 
-                const nome = document.getElementById('nome').value.trim();
-                const email = document.getElementById('email').value.trim();
                 const duvida = document.getElementById('duvida').value.trim();
+
+                if (!currentUser) {
+                    feedback.textContent = 'Nao foi possivel identificar seu usuario. Faca login novamente.';
+                    feedback.style.color = '#b71c1c';
+                    return;
+                }
 
                 const payload = {
                     subject: 'Contato pelo painel',
-                    user_id: 0,
-                    user_name: nome,
-                    user_email: email,
+                    user_id: currentUser.id,
+                    user_name: currentUser.name,
+                    user_email: currentUser.email,
                     email_to: 'inatelc317.mentistech.test@gmail.com',
                     message: duvida
                 };
