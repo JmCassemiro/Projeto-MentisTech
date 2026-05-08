@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/questions.css') }}">
+    <script src="{{ url_for('static', path='/js/questions.js') }}"></script>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="questionario-page" data-hero-url="{{ url_for('get_hero') }}">
+
+    <header id="questionario-header">
+        <a id="logo" href="{{ url_for('get_home') }}">
+            <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
+        </a>
+
+        <a class="perfil-link" href="#">
+            <span class="perfil-icone"></span>
+            PERFIL
+        </a>
+    </header>
+
+    <main id="questionario-main">
+        <section class="questionario-topo">
+            <p class="topo-label">QUESTIONÁRIO</p>
+            <p class="passo" id="passo-atual">Pergunta 1 de 6</p>
+
+            <div class="progresso" id="progresso" aria-label="Progresso do questionário">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <section class="questionario-corpo">
+            <h1 id="pergunta-titulo">Como você está se sentindo hoje?</h1>
+
+            <form class="questionario-form" id="questionario-form">
+                <div class="opcoes" id="opcoes"></div>
+
+                <div class="acoes">
+                    <button class="btn secundario" id="botao-voltar" type="button">SAIR</button>
+                    <button class="btn" id="botao-proximo" type="submit">PRÓXIMO</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer id="questionario-footer">
+        <p>&copy; 2026 Seu Sistema | Privacidade | Termos | Contato</p>
+    </footer>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+            <p class="modal-label" id="modal-label">CONFIRMAÇÃO</p>
+            <h2 class="modal-titulo" id="modal-titulo">Título do pop-up</h2>
+            <p class="modal-texto" id="modal-texto">Texto do pop-up.</p>
+
+            <div class="modal-acoes">
+                <button class="btn secundario" id="modal-cancelar" type="button">Cancelar</button>
+                <button class="btn" id="modal-confirmar" type="button">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

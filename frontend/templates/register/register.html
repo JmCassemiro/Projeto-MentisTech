@@ -16,8 +16,7 @@
 
     <header id="auth-header">
         <div id="logo">
-            <span></span>
-            LOGO
+            <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
         </div>
 
         <a href="{{url_for('get_home')}}" class="voltar">VOLTAR</a>
@@ -27,7 +26,7 @@
         <section class="auth-card" id="cadastro">
             <h1>CRIAR CONTA</h1>
 
-            <form class="auth-form">
+            <form class="auth-form" action="/initial" method="get">
                 <div class="campo">
                     <label for="nome">NOME</label>
                     <input type="text" id="nome" name="nome">
@@ -54,7 +53,7 @@
         <section class="auth-card">
             <h1>LOGIN</h1>
 
-            <form class="auth-form">
+            <form class="auth-form" action="/initial" method="get">
                 <div class="campo">
                     <label for="login-email">EMAIL</label>
                     <input type="email" id="login-email" name="email">
