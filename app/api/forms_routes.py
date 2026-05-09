@@ -15,7 +15,7 @@ forms_router = APIRouter(prefix="/forms", tags=["forms"])
 
 @forms_router.get("/questions")
 def get_questions():
-    with open("app/db/questions.json", "r") as file:
+    with open("app/db/questions.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
 
