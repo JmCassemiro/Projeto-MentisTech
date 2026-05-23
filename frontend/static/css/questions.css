@@ -1,5 +1,12 @@
+html,
+body {
+    min-height: 100%;
+}
+
 #questionario-page {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: #FDFBD4;
 }
 
@@ -78,6 +85,7 @@
     width: min(980px, calc(100% - 40px));
     margin: 0 auto;
     padding: 44px 0 32px;
+    flex: 1;
 }
 
 .questionario-topo {
@@ -141,8 +149,16 @@
 
 .opcoes {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 18px;
+}
+
+.progresso {
+    width: min(980px, 100%);
+    margin: 22px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 10px;
 }
 
 .opcao input {
@@ -173,7 +189,7 @@
     box-shadow: 0 16px 28px rgba(110, 100, 78, 0.18);
 }
 
-.opcao input:checked + .opcao-card {
+.opcao input:checked+.opcao-card {
     border-color: rgba(118, 28, 238, 0.34);
     background: rgba(245, 240, 203, 0.98);
     box-shadow: 0 0 0 4px rgba(118, 28, 238, 0.1);
@@ -227,6 +243,7 @@
 }
 
 @media (max-width: 760px) {
+
     #questionario-header,
     #questionario-main {
         width: calc(100% - 32px);
@@ -346,7 +363,3 @@
         width: 100%;
     }
 }
-
-
-
-

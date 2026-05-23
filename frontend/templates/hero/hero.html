@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,100 +11,231 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<div id="painel">
+    <div id="painel">
 
-    <header id="dashboard-header">
-        <a id="logo" href="{{ url_for('get_home') }}">
-            <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
-        </a>
+        <header id="dashboard-header">
+            <a id="logo" href="{{ url_for('get_home') }}">
+                <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
+            </a>
 
-        <a class="perfil-link" href="#">
-            <span class="perfil-icone"></span>
-            PERFIL
-        </a>
-    </header>
+            <a class="perfil-link" href="#">
+                <span class="perfil-icone"></span>
+                PERFIL
+            </a>
+        </header>
 
-    <main id="dashboard-main">
-        <section class="boas-vindas">
-            <p class="topo-label">BOAS-VINDAS</p>
-            <h1>Olá, [Nome do usuário]</h1>
-            <p class="texto-suporte">Seja bem-vindo de volta ao sistema</p>
-            <a class="btn secundario" href="/questions">COMEÇAR CHECK-IN</a>
-        </section>
+        <main id="dashboard-main">
+            <section class="boas-vindas">
+                <p class="topo-label">BOAS-VINDAS</p>
+                <h1>Olá, <span id="primeiro-nome">[seu nome]</span></h1>
+                <p class="texto-suporte">Seja bem-vindo de volta ao sistema</p>
+                <a class="btn secundario" href="/questions">COMEÇAR CHECK-IN</a>
+            </section>
 
-        <section class="bloco">
-            <h2>RESUMO RÁPIDO</h2>
+            <section class="bloco">
+                <h2>RESUMO RÁPIDO</h2>
 
-            <div class="resumo-grid">
-                <article class="info-card">
-                    <div class="card-topo">
-                        <span class="card-icone"></span>
-                        <small>NÍVEL ATUAL</small>
-                    </div>
-                    <strong>Moderado</strong>
-                </article>
+                <div class="resumo-grid">
+                    <article class="info-card">
+                        <div class="card-topo">
+                            <span class="card-icone card-icone--nivel"></span>
+                            <small>NÍVEL ATUAL</small>
+                        </div>
+                        <strong>Moderado</strong>
+                    </article>
 
-                <article class="info-card">
-                    <div class="card-topo">
-                        <span class="card-icone"></span>
-                        <small>CHECK-INS</small>
-                    </div>
-                    <strong>12</strong>
-                    <p>Últimos 7 dias</p>
-                </article>
+                    <article class="info-card">
+                        <div class="card-topo">
+                            <span class="card-icone card-icone--checkins"></span>
+                            <small>CHECK-INS</small>
+                        </div>
+                        <strong>12</strong>
+                        <p>Últimos 7 dias</p>
+                    </article>
 
-                <article class="info-card">
-                    <div class="card-topo">
-                        <span class="card-icone"></span>
-                        <small>TENDÊNCIA</small>
-                    </div>
-                    <strong>Em estabilidade</strong>
-                </article>
+                    <article class="info-card">
+                        <div class="card-topo">
+                            <span class="card-icone card-icone--tendencia"></span>
+                            <small>TENDÊNCIA</small>
+                        </div>
+                        <strong>Em estabilidade</strong>
+                    </article>
 
-                <article class="info-card">
-                    <div class="card-topo">
-                        <span class="card-icone alerta"></span>
-                        <small>PRÓXIMO</small>
-                    </div>
-                    <strong>Amanhã</strong>
-                    <p>seu check-in diário</p>
-                </article>
-            </div>
-        </section>
+                    <article class="info-card">
+                        <div class="card-topo">
+                            <span class="card-icone card-icone--proximo"></span>
+                            <small>PRÓXIMO</small>
+                        </div>
+                        <strong>Amanhã</strong>
+                        <p>seu check-in diário</p>
+                    </article>
+                </div>
+            </section>
 
-        <section class="duas-colunas">
-            <div class="bloco">
-                <h2>CONTATO</h2>
-                <span>Encontrou algum problema com o resultado, deseja entender melhor o que está sentindo ou precisa agendar um atendimento com um de nossos profissionais? Sinta-se à vontade para entrar em contato com um de nossos especialistas.</span>
+            <section class="duas-colunas">
+                <div class="bloco">
+                    <h2>CONTATO</h2>
+                    <span>Encontrou algum problema com o resultado, deseja entender melhor o que está sentindo ou
+                        precisa agendar um atendimento com um de nossos profissionais? Sinta-se à vontade para entrar em
+                        contato com um de nossos especialistas.</span>
 
-            </div>
+                </div>
 
-            <div class="bloco">
-                
-                <form class="contato-form">
-                    <div class="campo">
-                        <label for="nome">NOME</label>
-                        <input type="text" id="nome" name="nome">
-                    </div>
+                <div class="bloco">
 
-                    <div class="campo">
-                        <label for="email">EMAIL</label>
-                        <input type="email" id="email" name="email">
-                    </div>
+                    <form class="contato-form" id="contato-form">
+                        <div class="campo">
+                            <label for="duvida">DÚVIDA</label>
+                            <textarea id="duvida" name="duvida" rows="4"
+                                placeholder="Descreva sua dúvida ou solicitação" required></textarea>
+                        </div>
 
-                    <button class="btn secundario enviar" type="submit">ENVIAR MENSAGEM</button>
-                </form>
-            </div>
-        </section>
-    </main>
+                        <div class="contato-feedback" id="contato-feedback" aria-live="polite"></div>
 
-    <footer id="dashboard-footer">
-        <p>&copy; 2026 Seu Sistema | Privacidade | Termos | Contato</p>
-    </footer>
+                        <button class="btn secundario enviar" type="submit">ENVIAR MENSAGEM</button>
+                    </form>
+                </div>
+            </section>
+        </main>
 
-</div>
+        <footer id="dashboard-footer">
+            <p>&copy; 2026 Mentistech</p>
+        </footer>
 
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contatoForm = document.getElementById('contato-form');
+            const feedback = document.getElementById('contato-feedback');
+            const primeiroNome = document.getElementById('primeiro-nome');
+            const infoCards = document.querySelectorAll('.info-card');
+            let currentUser = null;
+
+            function setupTiltCards() {
+                const maxTilt = 15;
+
+                infoCards.forEach((card) => {
+                    let animationFrame = null;
+
+                    card.addEventListener('mousemove', (event) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = (event.clientX - rect.left) / rect.width;
+                        const y = (event.clientY - rect.top) / rect.height;
+                        const tiltX = (y - 0.5) * maxTilt;
+                        const tiltY = (0.5 - x) * maxTilt;
+
+                        if (animationFrame) {
+                            cancelAnimationFrame(animationFrame);
+                        }
+
+                        animationFrame = requestAnimationFrame(() => {
+                            card.classList.add('is-tilting');
+                            card.style.setProperty('--tilt-x', `${tiltX}deg`);
+                            card.style.setProperty('--tilt-y', `${tiltY}deg`);
+                            card.style.setProperty('--tilt-scale', '1.05');
+                        });
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        if (animationFrame) {
+                            cancelAnimationFrame(animationFrame);
+                        }
+
+                        card.classList.remove('is-tilting');
+                        card.style.setProperty('--tilt-x', '0deg');
+                        card.style.setProperty('--tilt-y', '0deg');
+                        card.style.setProperty('--tilt-scale', '1');
+                    });
+                });
+            }
+
+            function getFirstName(fullName) {
+                return fullName.trim().split(/\s+/)[0] || '[seu nome]';
+            }
+
+            async function loadCurrentUser() {
+                const accessToken = localStorage.getItem('access_token');
+                const tokenType = localStorage.getItem('token_type') || 'bearer';
+
+                if (!accessToken) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/usuarios/me', {
+                        headers: {
+                            Authorization: `${tokenType} ${accessToken}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        return;
+                    }
+
+                    const user = await response.json();
+                    currentUser = user;
+                    primeiroNome.textContent = getFirstName(user.name);
+                } catch (error) {
+                    console.error('Erro ao carregar usuario:', error);
+                }
+            }
+
+            loadCurrentUser();
+            setupTiltCards();
+
+            contatoForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                feedback.textContent = 'Enviando mensagem...';
+                feedback.style.color = 'var(--text-main)';
+
+                const duvida = document.getElementById('duvida').value.trim();
+
+                if (!currentUser) {
+                    feedback.textContent = 'Nao foi possivel identificar seu usuario. Faca login novamente.';
+                    feedback.style.color = '#b71c1c';
+                    return;
+                }
+
+                const payload = {
+                    subject: 'Contato pelo painel',
+                    user_id: currentUser.id,
+                    user_name: currentUser.name,
+                    user_email: currentUser.email,
+                    email_to: 'inatelc317.mentistech.test@gmail.com',
+                    message: duvida
+                };
+
+                try {
+                    const response = await fetch('/email/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        feedback.textContent = data.detail ? `Erro: ${data.detail}` : 'Erro ao enviar mensagem.';
+                        feedback.style.color = '#b71c1c';
+                        return;
+                    }
+
+                    feedback.textContent = 'Mensagem enviada com sucesso!';
+                    feedback.style.color = '#166534';
+                    contatoForm.reset();
+                } catch (error) {
+                    console.error('Erro enviar email:', error);
+                    feedback.textContent = 'Erro ao enviar mensagem. Tente novamente.';
+                    feedback.style.color = '#b71c1c';
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

@@ -14,7 +14,7 @@ forms_router = APIRouter(prefix="/forms", tags=["forms"])
 
 @forms_router.get("/questions")
 def get_questions():
-    with open("app/db/questions.json", "r") as file:
+    with open("app/db/questions.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
 
@@ -33,7 +33,7 @@ def submit_form(data: AnswerRequest, db: Session = Depends(get_db)):
             user_id=data.user_id,
             overall_mood=overall_mood,
             answers_json=[answer.model_dump() for answer in data.answers],
-            stress_level=(mood_avarage * 10),
+            stress_level=int(overall_mood * 10),
             ai_insights="Temporary AI insight",
             submitted_at=data.created_at,
         )
