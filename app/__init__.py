@@ -11,6 +11,7 @@ from app.api.hero_routes import hero_router
 from app.api.forms_routes import forms_router
 from app.api.email_routes import email_router
 from app.api.questions_routes import questions_router
+from app.api.analytics_routes import analytics_router
 
 
 
@@ -31,6 +32,7 @@ def create_app():
     app.include_router(auth_router)
     app.include_router(user_router)
     app.include_router(questions_router)
+    app.include_router(analytics_router)
 
 
     return app

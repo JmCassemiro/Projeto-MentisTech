@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         abrirModal({
                             label: "ERRO",
                             titulo: "Erro ao enviar respostas",
-                            texto: "Ocorreu um erro ao enviar suas respostas. Tente novamente.",
+                            texto: error,
                             textoConfirmar: "OK",
                             mostrarCancelar: false,
                             onConfirm: fecharModal
