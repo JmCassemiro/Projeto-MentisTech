@@ -187,11 +187,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                             question_id: pergunta.id,
                             value: respostas[pergunta.id] || 0
                         }));
+
                         const payload = {
-                            user_id: 1, // TODO: get from session or input
+                            user_id: 1,
                             answers: answers,
                             created_at: new Date().toISOString()
                         };
+
                         const response = await fetch('/forms/submit', {
                             method: 'POST',
                             headers: {
@@ -199,26 +201,42 @@ document.addEventListener("DOMContentLoaded", async () => {
                             },
                             body: JSON.stringify(payload)
                         });
-                        if (response.ok) {
-                            abrirModal({
-                                label: "DADOS ENVIADOS",
-                                titulo: "Respostas enviadas com sucesso",
-                                texto: "Os dados foram salvos e enviados para as psicólogas da empresa.",
-                                textoConfirmar: "Voltar ao painel",
-                                mostrarCancelar: false,
-                                onConfirm: () => {
-                                    window.location.href = heroUrl;
-                                }
-                            });
-                        } else {
-                            throw new Error('Erro no envio');
+
+                        let data = null;
+
+                        try {
+                            data = await response.json();
+                        } catch {
+                            data = null;
                         }
+
+                        if (!response.ok) {
+                            throw new Error(
+                                data?.detail ||
+                                data?.message ||
+                                `Erro ${response.status}`
+                            );
+                        }
+
+                        abrirModal({
+                            label: "DADOS ENVIADOS",
+                            titulo: "Respostas enviadas com sucesso",
+                            texto: "Os dados foram salvos com sucesso.",
+                            textoConfirmar: "Voltar ao painel",
+                            mostrarCancelar: false,
+                            onConfirm: () => {
+                                window.location.href = heroUrl;
+                            }
+                        });
+
                     } catch (error) {
-                        console.error('Erro ao enviar:', error);
+
+                        console.error("Erro completo:", error);
+
                         abrirModal({
                             label: "ERRO",
                             titulo: "Erro ao enviar respostas",
-                            texto: error,
+                            texto: error.message,
                             textoConfirmar: "OK",
                             mostrarCancelar: false,
                             onConfirm: fecharModal
