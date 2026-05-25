@@ -20,4 +20,5 @@ def get_me(
         id=user.id,
         name=user.full_name,
         email=user.corporate_email,
+        role=user.role,
     )
