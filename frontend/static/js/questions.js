@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const pagina = document.getElementById("questionario-page");
     const heroUrl = pagina.dataset.heroUrl;
+    let currentUser = null;
 
     const passoAtual = document.getElementById("passo-atual");
     const perguntaTitulo = document.getElementById("pergunta-titulo");
@@ -41,6 +42,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let acaoConfirmarModal = null;
     let acaoCancelarModal = null;
+
+    function getAuthHeaders() {
+        const accessToken = localStorage.getItem("access_token");
+        const tokenType = localStorage.getItem("token_type") || "bearer";
+        const headers = {};
+
+        if (accessToken) {
+            headers.Authorization = `${tokenType} ${accessToken}`;
+        }
+
+        return headers;
+    }
+
+    async function loadCurrentUser() {
+        try {
+            const response = await fetch("/usuarios/me", {
+                cache: "no-store",
+                headers: getAuthHeaders()
+            });
+
+            if (!response.ok) {
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("Erro ao carregar usuario:", error);
+            return null;
+        }
+    }
 
     function abrirModal({
         label = "AVISO",
@@ -188,8 +219,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                             value: respostas[pergunta.id] || 0
                         }));
 
+                        if (!currentUser) {
+                            throw new Error("Nao foi possivel identificar seu usuario. Faca login novamente.");
+                        }
+
                         const payload = {
-                            user_id: 1,
+                            user_id: currentUser.id,
                             answers: answers,
                             created_at: new Date().toISOString()
                         };
@@ -197,7 +232,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         const response = await fetch('/forms/submit', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                                ...getAuthHeaders()
                             },
                             body: JSON.stringify(payload)
                         });
@@ -251,5 +287,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderizarPergunta();
     });
 
+    currentUser = await loadCurrentUser();
     renderizarPergunta();
 });

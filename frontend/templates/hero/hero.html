@@ -17,14 +17,24 @@
     <div id="painel">
 
         <header id="dashboard-header">
-            <a id="logo" href="{{ url_for('get_home') }}">
+            <div id="logo">
                 <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
-            </a>
+            </div>
 
-            <a class="perfil-link" href="#">
-                <span class="perfil-icone"></span>
-                PERFIL
-            </a>
+            <div class="dashboard-menu">
+                <button class="menu-toggle" id="dashboard-menu-toggle" type="button" aria-expanded="false"
+                    aria-haspopup="true" aria-controls="dashboard-menu-list">
+                    <span class="menu-icone" aria-hidden="true"></span>
+                    MENU
+                </button>
+
+                <div class="menu-list" id="dashboard-menu-list" role="menu" hidden>
+                    <a class="menu-item" href="{{ url_for('get_hero') }}" role="menuitem">Painel</a>
+                    <a class="menu-item" href="{{ url_for('get_dashboards') }}" role="menuitem">Dashboards</a>
+                    <button class="menu-item menu-item--danger" id="logout-button" type="button"
+                        role="menuitem">Sair</button>
+                </div>
+            </div>
         </header>
 
         <main id="dashboard-main">
@@ -44,7 +54,8 @@
                             <span class="card-icone card-icone--nivel"></span>
                             <small>NÍVEL ATUAL</small>
                         </div>
-                        <strong>Moderado</strong>
+                        <strong id="nivel-atual-valor">Carregando...</strong>
+                        <p id="nivel-atual-texto">ultimo check-in</p>
                     </article>
 
                     <article class="info-card">
@@ -52,8 +63,8 @@
                             <span class="card-icone card-icone--checkins"></span>
                             <small>CHECK-INS</small>
                         </div>
-                        <strong>12</strong>
-                        <p>Últimos 7 dias</p>
+                        <strong id="total-checkins-valor">Carregando...</strong>
+                        <p id="total-checkins-texto">total realizado</p>
                     </article>
 
                     <article class="info-card">
@@ -61,7 +72,8 @@
                             <span class="card-icone card-icone--tendencia"></span>
                             <small>TENDÊNCIA</small>
                         </div>
-                        <strong>Em estabilidade</strong>
+                        <strong id="tendencia-valor">Carregando...</strong>
+                        <p id="tendencia-texto">comparando check-ins</p>
                     </article>
 
                     <article class="info-card">
@@ -69,8 +81,8 @@
                             <span class="card-icone card-icone--proximo"></span>
                             <small>PRÓXIMO</small>
                         </div>
-                        <strong>Amanhã</strong>
-                        <p>seu check-in diário</p>
+                        <strong id="proximo-checkin-valor">Carregando...</strong>
+                        <p id="proximo-checkin-texto">consultando agenda</p>
                     </article>
                 </div>
             </section>
@@ -81,11 +93,9 @@
                     <span>Encontrou algum problema com o resultado, deseja entender melhor o que está sentindo ou
                         precisa agendar um atendimento com um de nossos profissionais? Sinta-se à vontade para entrar em
                         contato com um de nossos especialistas.</span>
-
                 </div>
 
                 <div class="bloco">
-
                     <form class="contato-form" id="contato-form">
                         <div class="campo">
                             <label for="duvida">DÚVIDA</label>
@@ -107,135 +117,8 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const contatoForm = document.getElementById('contato-form');
-            const feedback = document.getElementById('contato-feedback');
-            const primeiroNome = document.getElementById('primeiro-nome');
-            const infoCards = document.querySelectorAll('.info-card');
-            let currentUser = null;
-
-            function setupTiltCards() {
-                const maxTilt = 15;
-
-                infoCards.forEach((card) => {
-                    let animationFrame = null;
-
-                    card.addEventListener('mousemove', (event) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = (event.clientX - rect.left) / rect.width;
-                        const y = (event.clientY - rect.top) / rect.height;
-                        const tiltX = (y - 0.5) * maxTilt;
-                        const tiltY = (0.5 - x) * maxTilt;
-
-                        if (animationFrame) {
-                            cancelAnimationFrame(animationFrame);
-                        }
-
-                        animationFrame = requestAnimationFrame(() => {
-                            card.classList.add('is-tilting');
-                            card.style.setProperty('--tilt-x', `${tiltX}deg`);
-                            card.style.setProperty('--tilt-y', `${tiltY}deg`);
-                            card.style.setProperty('--tilt-scale', '1.05');
-                        });
-                    });
-
-                    card.addEventListener('mouseleave', () => {
-                        if (animationFrame) {
-                            cancelAnimationFrame(animationFrame);
-                        }
-
-                        card.classList.remove('is-tilting');
-                        card.style.setProperty('--tilt-x', '0deg');
-                        card.style.setProperty('--tilt-y', '0deg');
-                        card.style.setProperty('--tilt-scale', '1');
-                    });
-                });
-            }
-
-            function getFirstName(fullName) {
-                return fullName.trim().split(/\s+/)[0] || '[seu nome]';
-            }
-
-            async function loadCurrentUser() {
-                const accessToken = localStorage.getItem('access_token');
-                const tokenType = localStorage.getItem('token_type') || 'bearer';
-
-                if (!accessToken) {
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/usuarios/me', {
-                        headers: {
-                            Authorization: `${tokenType} ${accessToken}`
-                        }
-                    });
-
-                    if (!response.ok) {
-                        return;
-                    }
-
-                    const user = await response.json();
-                    currentUser = user;
-                    primeiroNome.textContent = getFirstName(user.name);
-                } catch (error) {
-                    console.error('Erro ao carregar usuario:', error);
-                }
-            }
-
-            loadCurrentUser();
-            setupTiltCards();
-
-            contatoForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                feedback.textContent = 'Enviando mensagem...';
-                feedback.style.color = 'var(--text-main)';
-
-                const duvida = document.getElementById('duvida').value.trim();
-
-                if (!currentUser) {
-                    feedback.textContent = 'Nao foi possivel identificar seu usuario. Faca login novamente.';
-                    feedback.style.color = '#b71c1c';
-                    return;
-                }
-
-                const payload = {
-                    subject: 'Contato pelo painel',
-                    user_id: currentUser.id,
-                    user_name: currentUser.name,
-                    user_email: currentUser.email,
-                    email_to: 'inatelc317.mentistech.test@gmail.com',
-                    message: duvida
-                };
-
-                try {
-                    const response = await fetch('/email/send', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const data = await response.json();
-                        feedback.textContent = data.detail ? `Erro: ${data.detail}` : 'Erro ao enviar mensagem.';
-                        feedback.style.color = '#b71c1c';
-                        return;
-                    }
-
-                    feedback.textContent = 'Mensagem enviada com sucesso!';
-                    feedback.style.color = '#166534';
-                    contatoForm.reset();
-                } catch (error) {
-                    console.error('Erro enviar email:', error);
-                    feedback.textContent = 'Erro ao enviar mensagem. Tente novamente.';
-                    feedback.style.color = '#b71c1c';
-                }
-            });
-        });
-    </script>
+    <script src="{{ url_for('static', path='/js/dashboard-menu.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/hero.js') }}"></script>
 </body>
 
 </html>

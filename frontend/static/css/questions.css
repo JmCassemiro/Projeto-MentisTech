@@ -35,52 +35,6 @@ body {
     object-fit: contain;
 }
 
-.perfil-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-soft);
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.perfil-link:hover {
-    color: var(--primary);
-}
-
-.perfil-icone {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid rgba(118, 28, 238, 0.14);
-    position: relative;
-    flex: 0 0 auto;
-}
-
-.perfil-icone::before,
-.perfil-icone::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(118, 28, 238, 0.72);
-}
-
-.perfil-icone::before {
-    top: 4px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-}
-
-.perfil-icone::after {
-    bottom: 4px;
-    width: 12px;
-    height: 7px;
-    border-radius: 999px 999px 6px 6px;
-}
-
 #questionario-main {
     width: min(980px, calc(100% - 40px));
     margin: 0 auto;

@@ -35,6 +35,7 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
         id=user.id,
         name=user.full_name,
         email=user.corporate_email,
+        role=user.role,
     )
 
 
