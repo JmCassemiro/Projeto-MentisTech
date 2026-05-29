@@ -21,4 +21,5 @@ def get_me(
         name=user.full_name,
         email=user.corporate_email,
         role=user.role,
+        team=user.team.name if user.team else None,
     )

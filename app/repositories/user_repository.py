@@ -13,6 +13,7 @@ class UserRepository(BaseRepository[User]):
         self,
         *,
         company_id: int,
+        team_id: int | None,
         full_name: str,
         corporate_email: str,
         role: str,
@@ -20,6 +21,7 @@ class UserRepository(BaseRepository[User]):
     ) -> User:
         user = User(
             company_id=company_id,
+            team_id=team_id,
             full_name=full_name,
             corporate_email=corporate_email,
             role=role,

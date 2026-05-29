@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const peopleTable = document.getElementById('people-table');
     const userSearchForm = document.getElementById('user-search-form');
     const targetUserId = document.getElementById('target-user-id');
+    const teamSearchForm = document.getElementById('team-search-form');
+    const targetTeam = document.getElementById('target-team');
     const individualSectionTitle = document.getElementById('individual-section-title');
     const individualSectionDescription = document.getElementById('individual-section-description');
     const periodButtons = document.querySelectorAll('.periodo-btn');
@@ -24,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentUser = null;
     let overviewUsers = [];
     let individualCheckins = [];
+    let aiTrendOverride = null;
+    let trendMetaLabel = 'Nivel atual';
     let activeChartMode = 'all';
 
     function getAuthHeaders() {
@@ -242,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stressChartEmpty.hidden = false;
         aiTrendCard.className = 'trend-card';
         aiTrendCard.innerHTML = `<p>${escapeHtml(message)}</p>`;
+        aiTrendOverride = null;
         moodDistribution.innerHTML = `<p class="bar-empty">${escapeHtml(message)}</p>`;
         recentCheckinsChart.innerHTML = `<p class="bar-empty">${escapeHtml(message)}</p>`;
     }
@@ -370,13 +375,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderAiTrend(checkins) {
-        if (checkins.length === 0) {
+        if (checkins.length === 0 && !aiTrendOverride) {
             aiTrendCard.className = 'trend-card';
             aiTrendCard.innerHTML = '<p class="bar-empty">Sem check-ins para gerar tendencia.</p>';
             return;
         }
 
-        const latestCheckin = checkins[checkins.length - 1];
+        const latestCheckin = aiTrendOverride || checkins[checkins.length - 1];
         const insight = latestCheckin.ai_insights || 'Insight de IA ainda nao disponivel.';
         const normalizedInsight = normalizeText(insight);
         let trendClass = 'trend-card--stable';
@@ -395,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         aiTrendCard.className = `trend-card ${trendClass}`;
         aiTrendCard.innerHTML = `
             <strong>${escapeHtml(trendLabel)}</strong>
-            <span class="trend-meta">Nivel atual: ${escapeHtml(latestCheckin.overall_mood || 'A definir')}</span>
+            <span class="trend-meta">${escapeHtml(trendMetaLabel)}: ${escapeHtml(latestCheckin.overall_mood || 'A definir')}</span>
             <p>${escapeHtml(insight)}</p>
         `;
     }
@@ -553,6 +558,8 @@ document.addEventListener('DOMContentLoaded', () => {
         individualSectionDescription.textContent = Number(userId) === currentUser.id
             ? 'Dados da pessoa logada.'
             : 'Dados individuais carregados pela busca do psicologo.';
+        aiTrendOverride = null;
+        trendMetaLabel = 'Nivel atual';
 
         try {
             const checkins = await fetchJson(`/forms/history/${userId}`);
@@ -572,6 +579,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function loadTeamDashboard(teamId, teamName) {
+        individualSectionTitle.textContent = `Time: ${teamName}`;
+        individualSectionDescription.textContent = 'Dados agregados do time selecionado.';
+        trendMetaLabel = 'Media atual do time';
+
+        try {
+            const data = await fetchJson(`/analytics/team-history/${teamId}`);
+
+            if (!Array.isArray(data.checkins)) {
+                individualCheckins = [];
+                aiTrendOverride = null;
+                setIndividualUnavailable('Nao foi possivel carregar este time.');
+                return;
+            }
+
+            individualSectionDescription.textContent = `${data.users_count} pessoa(s) | ${data.checkins_count} check-ins no time.`;
+            individualCheckins = data.checkins;
+            aiTrendOverride = data.trend || null;
+            renderIndividualCharts();
+        } catch (error) {
+            console.error('Erro ao carregar dashboard do time:', error);
+            individualCheckins = [];
+            aiTrendOverride = null;
+            trendMetaLabel = 'Nivel atual';
+            setIndividualUnavailable(error.message || 'Nao foi possivel carregar este time.');
+        }
+    }
+
     function renderPeopleTable(users) {
         if (!users || users.length === 0) {
             peopleTable.innerHTML = '<p class="bar-empty">Nenhuma pessoa encontrada.</p>';
@@ -582,11 +617,33 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="people-row">
                 <span>#${user.id}</span>
                 <strong>${escapeHtml(user.name)}</strong>
-                <span>${escapeHtml(user.role || '-')}</span>
+                <span>${escapeHtml(user.team || 'Sem time')}</span>
                 <span>${user.checkins}</span>
                 <span>${escapeHtml(user.last_mood || '-')}</span>
             </div>
         `).join('');
+    }
+
+    function renderTeamOptions(groups) {
+        if (!targetTeam) {
+            return;
+        }
+
+        const previousValue = targetTeam.value;
+        const options = (groups || [])
+            .filter((group) => group.team_id && group.group)
+            .map((group) => `
+                <option value="${escapeHtml(group.team_id)}" data-team-name="${escapeHtml(group.group)}">
+                    ${escapeHtml(group.group)} (${group.users} pessoa(s), ${group.checkins} check-ins)
+                </option>
+            `)
+            .join('');
+
+        targetTeam.innerHTML = `<option value="">Selecione</option>${options}`;
+
+        if (previousValue) {
+            targetTeam.value = previousValue;
+        }
     }
 
     function renderCompanyOverview(data) {
@@ -605,6 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         renderBarList(companyMoodChart, data.mood_distribution || [], 'mood', 'count', 'Sem dados de humor.');
         renderPeopleTable(overviewUsers);
+        renderTeamOptions(data.groups || []);
     }
 
     async function loadCompanyOverview() {
@@ -641,6 +699,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             loadIndividualDashboard(userId);
+        });
+
+        teamSearchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const teamId = targetTeam.value;
+            const selectedOption = targetTeam.options[targetTeam.selectedIndex];
+            const teamName = selectedOption?.dataset.teamName || selectedOption?.textContent || 'Time';
+
+            if (!teamId) {
+                return;
+            }
+
+            loadTeamDashboard(teamId, teamName);
         });
     }
 

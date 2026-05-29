@@ -11,7 +11,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from app.core.database import SessionLocal, engine
 from app.core.security import get_password_hash
 from app.db.base import Base
-from app.db.models import CheckIn, Company, User
+from app.db.models import CheckIn, Company, Team, User
 from app.services.trend_ai_service import TrendAIService, mood_from_score
 
 SEED_COMPANY_CNPJ = "00.000.000/0000-00"
@@ -32,6 +32,7 @@ PROFILES = [
         "email": "helena.psicologa@mentistech.com.br",
         "old_email": "helena.psicologa@mentistech.local",
         "role": "Psicologa",
+        "team": "Psicologia",
         "answers": [
             [1, 5, 1, 4, 4, 4, 4, 4, 4, 4],
             [1, 5, 1, 4, 4, 4, 4, 4, 4, 4],
@@ -44,7 +45,8 @@ PROFILES = [
         "name": "Ana Costa",
         "email": "ana.costa@mentistech.com.br",
         "old_email": "ana.costa@mentistech.local",
-        "role": "Produto",
+        "role": "Analista de Produto",
+        "team": "Produto",
         "answers": [
             [5, 2, 4, 2, 2, 2, 2, 2, 2, 2],
             [4, 2, 4, 3, 2, 3, 3, 2, 2, 3],
@@ -57,7 +59,8 @@ PROFILES = [
         "name": "Bruno Silva",
         "email": "bruno.silva@mentistech.com.br",
         "old_email": "bruno.silva@mentistech.local",
-        "role": "Comercial",
+        "role": "Executivo Comercial",
+        "team": "Comercial",
         "answers": [
             [1, 5, 1, 5, 5, 4, 5, 5, 5, 5],
             [2, 4, 2, 4, 4, 4, 4, 4, 4, 4],
@@ -70,7 +73,8 @@ PROFILES = [
         "name": "Carla Mendes",
         "email": "carla.mendes@mentistech.com.br",
         "old_email": "carla.mendes@mentistech.local",
-        "role": "Engenharia",
+        "role": "Desenvolvedora",
+        "team": "Engenharia",
         "answers": [
             [2, 4, 2, 4, 4, 4, 4, 3, 4, 4],
             [2, 4, 2, 4, 4, 4, 4, 4, 4, 4],
@@ -103,6 +107,7 @@ def main() -> None:
 
         users = []
         for profile in PROFILES:
+            team = _get_or_create_team(db, company.id, profile["team"])
             email_candidates = [profile["email"], profile.get("old_email")]
             email_candidates = [email for email in email_candidates if email]
             user = (
@@ -113,6 +118,7 @@ def main() -> None:
             if user is None:
                 user = User(
                     company_id=company.id,
+                    team_id=team.id,
                     full_name=profile["name"],
                     corporate_email=profile["email"],
                     role=profile["role"],
@@ -121,6 +127,7 @@ def main() -> None:
                 db.add(user)
             else:
                 user.company_id = company.id
+                user.team_id = team.id
                 user.full_name = profile["name"]
                 user.corporate_email = profile["email"]
                 user.role = profile["role"]
@@ -173,7 +180,8 @@ def main() -> None:
             )
             print(
                 f"- {user.id}: {user.full_name} | {user.corporate_email} | "
-                f"{user.role} | ultimo score {latest.stress_level if latest else '-'}"
+                f"{user.role} | time {user.team.name if user.team else '-'} | "
+                f"ultimo score {latest.stress_level if latest else '-'}"
             )
 
     finally:
@@ -185,6 +193,26 @@ def _answers_from_values(values: list[int]) -> list[dict[str, int]]:
         {"question_id": question_id, "value": value}
         for question_id, value in enumerate(values, start=1)
     ]
+
+
+def _get_or_create_team(db, company_id: int, name: str) -> Team:
+    team = (
+        db.query(Team)
+        .filter(
+            Team.company_id == company_id,
+            Team.name == name,
+        )
+        .one_or_none()
+    )
+
+    if team is not None:
+        return team
+
+    team = Team(company_id=company_id, name=name)
+    db.add(team)
+    db.commit()
+    db.refresh(team)
+    return team
 
 
 if __name__ == "__main__":
