@@ -21,17 +21,17 @@
   },
   {
     "id": 5,
-    "question": "Como você avalia o relacionamento com sua liderança neste mês?",
+    "question": "Minha liderança me apoiou adequadamente durante este mês.",
     "type": "scale"
   },
   {
     "id": 6,
-    "question": "Como você avalia o trabalho em equipe neste mês?",
+    "question": "A colaboração entre os membros da minha equipe foi eficaz neste mês.",
     "type": "scale"
   },
   {
     "id": 7,
-    "question": "Como você avalia o seu trabalho neste mês?",
+    "question": "Sinto que desempenhei minhas atividades de forma satisfatória neste mês.",
     "type": "scale"
   },
   {
@@ -46,7 +46,7 @@
   },
   {
     "id": 10,
-    "question": "De forma geral, como você se sente com relação à empresa neste mês?",
+    "question": "De forma geral, estou satisfeito(a) com minha experiência na empresa neste mês.",
     "type": "scale"
   }
 ]
