@@ -75,45 +75,111 @@ document.addEventListener('DOMContentLoaded', () => {
         proximoCheckinTexto.textContent = texto;
     }
 
+    function normalizeText(value) {
+        return String(value || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim();
+    }
+
+    function getAiTrendLabel(aiInsight) {
+        const normalizedInsight = normalizeText(aiInsight);
+
+        if (normalizedInsight.includes('melhora')) {
+            return 'Em melhora';
+        }
+
+        if (normalizedInsight.includes('piora')) {
+            return 'Em piora';
+        }
+
+        if (normalizedInsight.includes('estabilidade')) {
+            return 'Em estabilidade';
+        }
+
+        return 'A definir';
+    }
+
+    function getAiTrendExplanation(latestCheckin, previousCheckin) {
+        const insight = latestCheckin?.ai_insights || '';
+        const variationMatch = insight.match(/Variacao em relacao ao ultimo check-in: ([^.]+)\./i);
+        const confidenceMatch = insight.match(/confianca (\d+)%/i);
+
+        if (variationMatch && confidenceMatch) {
+            return `IA ${confidenceMatch[1]}% | ${variationMatch[1]}`;
+        }
+
+        if (variationMatch) {
+            return variationMatch[1];
+        }
+
+        if (confidenceMatch) {
+            return `IA com confianca ${confidenceMatch[1]}%`;
+        }
+
+        if (!previousCheckin) {
+            return 'IA aguardando mais historico';
+        }
+
+        return 'analise da IA no ultimo check-in';
+    }
+
     function getTrendInfo(checkins) {
-        if (checkins.length < 2) {
+        if (checkins.length === 0) {
+            return {
+                valor: 'Sem dados',
+                texto: 'faca seu primeiro check-in'
+            };
+        }
+
+        const latestCheckin = checkins[0];
+        const previousCheckin = checkins[1] || null;
+        const trendLabel = getAiTrendLabel(latestCheckin.ai_insights);
+
+        if (trendLabel !== 'A definir') {
+            return {
+                valor: trendLabel,
+                texto: getAiTrendExplanation(latestCheckin, previousCheckin)
+            };
+        }
+
+        if (!previousCheckin) {
             return {
                 valor: 'Sem hist\u00f3rico',
                 texto: 'aguardando comparativo'
             };
         }
 
-        const latestStress = Number(checkins[0].stress_level);
-        const previousStress = Number(checkins[1].stress_level);
+        const latestScore = Number(latestCheckin.stress_level);
+        const previousScore = Number(previousCheckin.stress_level);
 
-        if (Number.isNaN(latestStress) || Number.isNaN(previousStress)) {
+        if (Number.isNaN(latestScore) || Number.isNaN(previousScore)) {
             return {
                 valor: 'A definir',
                 texto: 'dados insuficientes'
             };
         }
 
-        const difference = latestStress - previousStress;
+        const difference = latestScore - previousScore;
         const absoluteDifference = Math.abs(difference);
 
         if (absoluteDifference <= 2) {
             return {
                 valor: 'Em estabilidade',
-                texto: 'sem mudan\u00e7as relevantes'
+                texto: 'sem mudancas relevantes'
             };
         }
 
-        if (difference < 0) {
-            return {
+        return difference > 0
+            ? {
                 valor: 'Em melhora',
+                texto: `alta de ${absoluteDifference} pontos`
+            }
+            : {
+                valor: 'Em piora',
                 texto: `queda de ${absoluteDifference} pontos`
             };
-        }
-
-        return {
-            valor: 'Em aten\u00e7\u00e3o',
-            texto: `alta de ${absoluteDifference} pontos`
-        };
     }
 
     function formatCheckinDate(dateValue) {

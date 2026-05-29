@@ -380,16 +380,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const insight = latestCheckin.ai_insights || 'Insight de IA ainda nao disponivel.';
         const normalizedInsight = normalizeText(insight);
         let trendClass = 'trend-card--stable';
+        let trendLabel = 'Em estabilidade';
 
         if (normalizedInsight.includes('piora')) {
             trendClass = 'trend-card--worse';
+            trendLabel = 'Em piora';
         } else if (normalizedInsight.includes('melhora')) {
             trendClass = 'trend-card--better';
+            trendLabel = 'Em melhora';
+        } else if (!normalizedInsight.includes('estabilidade')) {
+            trendLabel = 'A definir';
         }
 
         aiTrendCard.className = `trend-card ${trendClass}`;
         aiTrendCard.innerHTML = `
-            <strong>${escapeHtml(latestCheckin.overall_mood || 'Check-in recente')}</strong>
+            <strong>${escapeHtml(trendLabel)}</strong>
+            <span class="trend-meta">Nivel atual: ${escapeHtml(latestCheckin.overall_mood || 'A definir')}</span>
             <p>${escapeHtml(insight)}</p>
         `;
     }
