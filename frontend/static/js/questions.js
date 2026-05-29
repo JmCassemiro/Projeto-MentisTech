@@ -43,6 +43,69 @@ document.addEventListener("DOMContentLoaded", async () => {
     let acaoConfirmarModal = null;
     let acaoCancelarModal = null;
 
+    const defaultScaleOptions = [
+        { face: "😣", label: "Muito ruim" },
+        { face: "😕", label: "Ruim" },
+        { face: "😐", label: "Neutro" },
+        { face: "🙂", label: "Bom" },
+        { face: "😄", label: "Excelente" }
+    ];
+
+    const scaleOptionsByQuestionId = {
+        1: [
+            { face: "😣", label: "Muito alta", value: 5 },
+            { face: "😕", label: "Alta", value: 4 },
+            { face: "😐", label: "Moderada", value: 3 },
+            { face: "🙂", label: "Baixa", value: 2 },
+            { face: "😄", label: "Nenhuma", value: 1 }
+        ],
+        2: [
+            { face: "😣", label: "Nenhum apoio" },
+            { face: "😕", label: "Pouco apoio" },
+            { face: "😐", label: "Moderado" },
+            { face: "🙂", label: "Bom apoio" },
+            { face: "😄", label: "Muito apoio" }
+        ],
+        3: [
+            { face: "😣", label: "Interferiu muito", value: 5 },
+            { face: "😕", label: "Interferiu bastante", value: 4 },
+            { face: "😐", label: "Moderado", value: 3 },
+            { face: "🙂", label: "Interferiu pouco", value: 2 },
+            { face: "😄", label: "N\u00e3o interferiu", value: 1 }
+        ],
+        4: [
+            { face: "😣", label: "Nada acolhedora" },
+            { face: "😕", label: "Pouco acolhedora" },
+            { face: "😐", label: "Neutra" },
+            { face: "🙂", label: "Acolhedora" },
+            { face: "😄", label: "Muito acolhedora" }
+        ],
+        5: defaultScaleOptions,
+        6: defaultScaleOptions,
+        7: defaultScaleOptions,
+        8: [
+            { face: "😣", label: "Nada reconhecido(a)" },
+            { face: "😕", label: "Pouco" },
+            { face: "😐", label: "Moderado" },
+            { face: "🙂", label: "Bem reconhecido(a)" },
+            { face: "😄", label: "Muito reconhecido(a)" }
+        ],
+        9: [
+            { face: "😣", label: "Nenhuma" },
+            { face: "😕", label: "Poucas" },
+            { face: "😐", label: "Moderadas" },
+            { face: "🙂", label: "Boas" },
+            { face: "😄", label: "Excelentes" }
+        ],
+        10: [
+            { face: "😣", label: "Muito negativo" },
+            { face: "😕", label: "Negativo" },
+            { face: "😐", label: "Neutro" },
+            { face: "🙂", label: "Positivo" },
+            { face: "😄", label: "Muito positivo" }
+        ]
+    };
+
     function getAuthHeaders() {
         const accessToken = localStorage.getItem("access_token");
         const tokenType = localStorage.getItem("token_type") || "bearer";
@@ -136,14 +199,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         perguntaTitulo.textContent = pergunta.question;
 
         if (pergunta.type === "scale") {
-            const labels = ["Discordo totalmente", "Discordo", "Neutro", "Concordo", "Concordo totalmente"];
-            opcoesContainer.innerHTML = labels.map((label, index) => {
-                const value = index + 1;
+            const options = scaleOptionsByQuestionId[pergunta.id] || defaultScaleOptions;
+            opcoesContainer.innerHTML = options.map((option, index) => {
+                const value = option.value || index + 1;
                 return `
                     <label class="opcao">
                         <input type="radio" name="resposta" value="${value}" ${respostaAtual == value ? "checked" : ""}>
                         <span class="opcao-card">
-                            <strong>${value} - ${label}</strong>
+                            <span class="resposta-emoji" aria-hidden="true">${option.face}</span>
+                            <strong>${option.label}</strong>
                         </span>
                     </label>
                 `;
