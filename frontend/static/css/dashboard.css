@@ -372,6 +372,47 @@
     background: var(--accent-gradient);
 }
 
+.trend-card {
+    min-height: 196px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid rgba(20, 125, 172, 0.16);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.58);
+}
+
+.trend-card strong {
+    color: var(--text-main);
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+
+.trend-card p {
+    color: var(--text-light);
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 700;
+}
+
+.trend-card--better {
+    border-color: rgba(20, 125, 172, 0.28);
+    background: linear-gradient(135deg, rgba(68, 237, 245, 0.16), rgba(255, 255, 255, 0.72));
+}
+
+.trend-card--stable {
+    border-color: rgba(138, 122, 44, 0.24);
+    background: linear-gradient(135deg, rgba(239, 143, 146, 0.12), rgba(255, 255, 255, 0.72));
+}
+
+.trend-card--worse {
+    border-color: rgba(183, 28, 28, 0.26);
+    background: linear-gradient(135deg, rgba(183, 28, 28, 0.1), rgba(255, 255, 255, 0.72));
+}
+
 .pie-chart-container {
     min-height: 198px;
 }

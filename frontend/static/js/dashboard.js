@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stressChartSummary = document.getElementById('stress-chart-summary');
     const stressChartEmpty = document.getElementById('stress-chart-empty');
     const stressChartTooltip = document.getElementById('stress-chart-tooltip');
+    const aiTrendCard = document.getElementById('ai-trend-card');
     const moodDistribution = document.getElementById('mood-distribution');
     const recentCheckinsChart = document.getElementById('recent-checkins-chart');
 
@@ -239,6 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
         stressChartSummary.textContent = message;
         stressChartEmpty.textContent = message;
         stressChartEmpty.hidden = false;
+        aiTrendCard.className = 'trend-card';
+        aiTrendCard.innerHTML = `<p>${escapeHtml(message)}</p>`;
         moodDistribution.innerHTML = `<p class="bar-empty">${escapeHtml(message)}</p>`;
         recentCheckinsChart.innerHTML = `<p class="bar-empty">${escapeHtml(message)}</p>`;
     }
@@ -366,6 +369,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
+    function renderAiTrend(checkins) {
+        if (checkins.length === 0) {
+            aiTrendCard.className = 'trend-card';
+            aiTrendCard.innerHTML = '<p class="bar-empty">Sem check-ins para gerar tendencia.</p>';
+            return;
+        }
+
+        const latestCheckin = checkins[checkins.length - 1];
+        const insight = latestCheckin.ai_insights || 'Insight de IA ainda nao disponivel.';
+        const normalizedInsight = normalizeText(insight);
+        let trendClass = 'trend-card--stable';
+
+        if (normalizedInsight.includes('piora')) {
+            trendClass = 'trend-card--worse';
+        } else if (normalizedInsight.includes('melhora')) {
+            trendClass = 'trend-card--better';
+        }
+
+        aiTrendCard.className = `trend-card ${trendClass}`;
+        aiTrendCard.innerHTML = `
+            <strong>${escapeHtml(latestCheckin.overall_mood || 'Check-in recente')}</strong>
+            <p>${escapeHtml(insight)}</p>
+        `;
+    }
+
     function getMoodColor(index) {
         const colors = ['#761cee', '#147dac', '#44edf5', '#ef8f92', '#8a7a2c', '#b71c1c', '#4f46e5'];
         return colors[index % colors.length];
@@ -483,6 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const stressChartCheckins = getGroupedStressCheckins(checkins, activeChartMode);
 
         renderStressChart(stressChartCheckins, checkins);
+        renderAiTrend(checkins);
         renderMoodDistribution(checkins);
         renderRecentCheckins(checkins);
     }
