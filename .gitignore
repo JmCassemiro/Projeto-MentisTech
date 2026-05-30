@@ -74,7 +74,7 @@ instance/
 .webassets-cache
 
 # Local database file
-app.db
+
 
 # Scrapy stuff:
 .scrapy
