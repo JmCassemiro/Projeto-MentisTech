@@ -1,13 +1,17 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
 
-class User(Base):
-    __tablename__ = "user"
+class Team(Base):
+    __tablename__ = "team"
+
+    __table_args__ = (
+        UniqueConstraint("company_id", "name", name="uq_team_company_name"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     company_id: Mapped[int] = mapped_column(
@@ -16,21 +20,7 @@ class User(Base):
         nullable=False,
         index=True,
     )
-    team_id: Mapped[int | None] = mapped_column(
-        Integer,
-        ForeignKey("team.id"),
-        nullable=True,
-        index=True,
-    )
-    full_name: Mapped[str] = mapped_column(String(150), nullable=False)
-    corporate_email: Mapped[str] = mapped_column(
-        String(255),
-        nullable=False,
-        unique=True,
-        index=True,
-    )
-    role: Mapped[str] = mapped_column(String(120), nullable=False)
-    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -45,4 +35,3 @@ class User(Base):
     )
 
     company = relationship("Company")
-    team = relationship("Team")

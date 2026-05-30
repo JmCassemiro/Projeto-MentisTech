@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.db.models.user import User
 from app.repositories.company_repository import CompanyRepository
+from app.repositories.team_repository import TeamRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth_schemas import RegisterRequest
 
@@ -22,6 +23,7 @@ class InvalidCredentialsError(Exception):
 class AuthService:
     def __init__(self, db: Session) -> None:
         self.company_repository = CompanyRepository(db)
+        self.team_repository = TeamRepository(db)
         self.user_repository = UserRepository(db)
 
     def register(self, request: RegisterRequest) -> User:
@@ -37,12 +39,17 @@ class AuthService:
                 cnpj=DEFAULT_COMPANY_CNPJ,
             )
 
+        team = self.team_repository.get_or_create(
+            company_id=company.id,
+            name=request.team.strip() or "Sem time",
+        )
+
         return self.user_repository.create(
             company_id=company.id,
+            team_id=team.id,
             full_name=request.name.strip(),
             corporate_email=email,
             role=request.role.strip(),
-            # team=request.team.strip(),
             password_hash=get_password_hash(request.password),
         )
 

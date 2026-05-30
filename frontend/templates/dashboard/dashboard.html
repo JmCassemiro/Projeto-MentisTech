@@ -72,7 +72,7 @@
                         <div class="chart-header">
                             <div>
                                 <small>GRUPOS</small>
-                                <strong>Média por cargo</strong>
+                                <strong>Média por time</strong>
                             </div>
                         </div>
 
@@ -95,19 +95,32 @@
                     <div class="chart-header">
                         <div>
                             <small>BUSCA</small>
-                            <strong>Dashboard de uma pessoa</strong>
+                            <strong>Dashboards por pessoa ou time</strong>
                         </div>
                     </div>
 
-                    <form class="user-search-form" id="user-search-form">
-                        <div class="campo">
-                            <label for="target-user-id">ID DA PESSOA</label>
-                            <input id="target-user-id" name="target-user-id" type="number" min="1"
-                                placeholder="Ex: 12" required>
-                        </div>
+                    <div class="search-grid">
+                        <form class="user-search-form" id="user-search-form">
+                            <div class="campo">
+                                <label for="target-user-id">ID DA PESSOA</label>
+                                <input id="target-user-id" name="target-user-id" type="number" min="1"
+                                    placeholder="Ex: 12" required>
+                            </div>
 
-                        <button class="btn" type="submit">BUSCAR</button>
-                    </form>
+                            <button class="btn" type="submit">BUSCAR</button>
+                        </form>
+
+                        <form class="user-search-form" id="team-search-form">
+                            <div class="campo">
+                                <label for="target-team">TIME</label>
+                                <select id="target-team" name="target-team" required>
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+
+                            <button class="btn" type="submit">BUSCAR TIME</button>
+                        </form>
+                    </div>
 
                     <div class="people-table" id="people-table"></div>
                 </article>
@@ -166,6 +179,19 @@
                         </div>
 
                         <div class="recent-bars" id="recent-checkins-chart"></div>
+                    </article>
+
+                    <article class="chart-panel chart-panel--wide">
+                        <div class="chart-header">
+                            <div>
+                                <small>IA</small>
+                                <strong>Tendencia</strong>
+                            </div>
+                        </div>
+
+                        <div class="trend-card" id="ai-trend-card">
+                            <p>Carregando...</p>
+                        </div>
                     </article>
                 </div>
             </section>

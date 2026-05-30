@@ -1,15 +1,15 @@
 #painel {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
     background: #FDFBD4;
 }
 
 #dashboard-header {
     width: min(1120px, calc(100% - 40px));
     margin: 0 auto;
-    padding: 24px 0 18px;
+    padding: 16px 0 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -25,7 +25,7 @@
 
 #logo img {
     display: block;
-    height: 78px;
+    height: 62px;
     width: auto;
     max-width: 280px;
     object-fit: contain;
@@ -124,12 +124,13 @@
 #dashboard-main {
     width: min(1120px, calc(100% - 40px));
     margin: 0 auto;
-    padding-bottom: 28px;
+    padding-bottom: 0;
     flex: 1;
+    min-height: 0;
 }
 
 .boas-vindas {
-    padding: 48px 0 28px;
+    padding: 24px 0 18px;
     text-align: center;
     border-bottom: 1px solid rgba(118, 28, 238, 0.12);
 }
@@ -153,13 +154,13 @@
 }
 
 .texto-suporte {
-    margin-bottom: 22px;
+    margin-bottom: 14px;
     color: var(--text-light);
     font-size: 14px;
 }
 
 .bloco {
-    padding: 24px 0 0;
+    padding: 16px 0 0;
 }
 
 h2 {
@@ -278,7 +279,7 @@ h2 {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
     gap: 24px;
-    margin-top: 40px;
+    margin-top: 14px;
 }
 
 .suporte-card {
@@ -343,7 +344,7 @@ h2 {
 .campo textarea {
     padding: 12px 14px;
     resize: vertical;
-    min-height: 120px;
+    min-height: 78px;
 }
 
 .campo input:focus,
@@ -359,11 +360,11 @@ h2 {
 }
 
 #dashboard-footer {
-    padding: 10px 20px 28px;
+    padding: 8px 20px 12px;
     color: var(--text-light);
     text-align: center;
     font-size: 13px;
-    margin-top: 64px;
+    margin-top: 0;
 }
 
 @media (max-width: 920px) {
