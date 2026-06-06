@@ -20,6 +20,12 @@
             <div id="logo">
                 <img src="{{ url_for('static', path='/images/MENTISTECH_logo.png') }}" alt="MentisTech">
             </div>
+
+            <nav id="menu" aria-label="Navegação principal">
+                <a href="#hero">Entrar</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#como-funciona">Como funciona</a>
+            </nav>
         </header>
 
         <section id="hero">
@@ -28,7 +34,60 @@
             <p>Acompanhe seu bem-estar emocional com insights inteligentes e uma rotina simples de autocuidado.</p>
 
             <div id="botoes">
-                <a class="btn" href="{{ url_for('get_autheticate') }}">Entrar</a>
+                <a id="entrar-home" class="btn" href="{{ url_for('get_autheticate') }}">Entrar</a>
+            </div>
+        </section>
+
+        <section id="sobre">
+            <div class="sobre-layout">
+                <div class="sobre-texto">
+                    <span class="section-kicker">SOBRE A MENTISTECH</span>
+                    <h2>Bem-estar emocional com acompanhamento simples e inteligente</h2>
+                    <p>
+                        A MentisTech ajuda pessoas e equipes a entenderem melhor os sinais do dia a dia.
+                        Com check-ins rápidos, a plataforma transforma respostas em indicadores visuais,
+                        facilitando a percepção de estresse, humor e evolução emocional ao longo do tempo.
+                    </p>
+                    <p>
+                        A proposta é apoiar uma rotina de cuidado mais leve: menos achismo, mais clareza
+                        sobre como você está se sentindo e quando pode ser importante buscar apoio.
+                    </p>
+                </div>
+
+                <div class="sobre-painel" aria-label="Resumo da plataforma">
+                    <div class="sobre-metrica">
+                        <strong>3 min</strong>
+                        <span>para registrar um check-in</span>
+                    </div>
+                    <div class="sobre-metrica">
+                        <strong>24/7</strong>
+                        <span>histórico disponível para consulta</span>
+                    </div>
+                    <div class="sobre-metrica">
+                        <strong>IA</strong>
+                        <span>insights para acompanhar tendências</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sobre-recursos">
+                <article class="recurso">
+                    <span class="recurso-numero">01</span>
+                    <strong>Autopercepção</strong>
+                    <p>Ajuda você a reconhecer padrões emocionais que podem passar despercebidos na rotina.</p>
+                </article>
+
+                <article class="recurso">
+                    <span class="recurso-numero">02</span>
+                    <strong>Apoio para equipes</strong>
+                    <p>Organiza informações para que lideranças e psicólogos acompanhem grupos com mais clareza.</p>
+                </article>
+
+                <article class="recurso">
+                    <span class="recurso-numero">03</span>
+                    <strong>Decisões mais humanas</strong>
+                    <p>Transforma dados emocionais em conversas melhores sobre cuidado, prevenção e bem-estar.</p>
+                </article>
             </div>
         </section>
 
@@ -37,19 +96,23 @@
 
             <div class="cards">
                 <div class="card">
-                    <div class="icon"></div>
+                    <span class="passo-numero">01</span>
                     <p>Responda perguntas rápidas</p>
                 </div>
 
                 <div class="card">
-                    <div class="icon"></div>
+                    <span class="passo-numero">02</span>
                     <p>Sistema avalia seu estado emocional</p>
                 </div>
 
                 <div class="card">
-                    <div class="icon"></div>
+                    <span class="passo-numero">03</span>
                     <p>Veja seu nível de estresse ao longo do tempo</p>
                 </div>
+            </div>
+
+            <div class="section-acao">
+                <a class="btn" href="#hero">Começar acompanhamento</a>
             </div>
         </section>
 
@@ -58,7 +121,7 @@
 
             <div class="cards">
                 <div class="card">
-                    <div class="icon"></div>
+                    <span class="beneficio-marca" aria-hidden="true">✓</span>
                     <div>
                         <strong>Identificação de estresse</strong>
                         <p>Detecta sinais de estresse e ansiedade antes que se intensifiquem.</p>
@@ -66,7 +129,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="icon"></div>
+                    <span class="beneficio-marca" aria-hidden="true">✓</span>
                     <div>
                         <strong>Acompanhamento contínuo</strong>
                         <p>Monitoramento regular do seu bem-estar emocional.</p>

@@ -1,8 +1,7 @@
 #painel {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     background: #FDFBD4;
 }
 
@@ -124,9 +123,8 @@
 #dashboard-main {
     width: min(1120px, calc(100% - 40px));
     margin: 0 auto;
-    padding-bottom: 0;
+    padding-bottom: 24px;
     flex: 1;
-    min-height: 0;
 }
 
 .boas-vindas {

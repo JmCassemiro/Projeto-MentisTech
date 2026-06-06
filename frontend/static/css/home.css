@@ -125,10 +125,15 @@
     justify-content: center;
 }
 
+#entrar-home {
+    scroll-margin-top: 140px;
+}
+
 a {
     text-decoration: none;
 }
 
+#sobre,
 #como-funciona,
 #beneficios,
 #footer {
@@ -140,7 +145,118 @@ section:not(#hero) {
     scroll-margin-top: 92px;
 }
 
-h2 {
+#sobre {
+    padding-top: 96px;
+}
+
+.sobre-layout,
+.sobre-recursos {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+}
+
+.sobre-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+    align-items: stretch;
+    gap: clamp(28px, 5vw, 72px);
+}
+
+.section-kicker {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.sobre-texto h2 {
+    max-width: 720px;
+    color: var(--text-main);
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.08;
+}
+
+.sobre-texto p {
+    max-width: 720px;
+    margin-top: 20px;
+    color: var(--text-light);
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.sobre-painel {
+    padding: 8px 28px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--card-bg-strong);
+    box-shadow: var(--shadow);
+}
+
+.sobre-metrica {
+    padding: 24px 0;
+}
+
+.sobre-metrica + .sobre-metrica {
+    border-top: 1px solid rgba(163, 152, 122, 0.34);
+}
+
+.sobre-metrica strong,
+.sobre-metrica span {
+    display: block;
+}
+
+.sobre-metrica strong {
+    margin-bottom: 6px;
+    color: var(--primary);
+    font-size: 28px;
+    line-height: 1;
+}
+
+.sobre-metrica span {
+    color: var(--text-light);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.sobre-recursos {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.recurso {
+    min-height: 190px;
+    padding: 24px;
+    border-top: 2px solid var(--primary);
+    background: rgba(241, 238, 191, 0.58);
+}
+
+.recurso-numero {
+    display: block;
+    margin-bottom: 24px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.recurso strong {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-main);
+    font-size: 16px;
+}
+
+.recurso p {
+    color: var(--text-light);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+#como-funciona h2,
+#beneficios h2 {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -152,7 +268,8 @@ h2 {
     text-transform: uppercase;
 }
 
-h2::after {
+#como-funciona h2::after,
+#beneficios h2::after {
     content: "";
     height: 1px;
     flex: 1;
@@ -192,13 +309,24 @@ h2::after {
     border-color: rgba(239, 143, 146, 0.34);
 }
 
-.icon {
+.passo-numero,
+.beneficio-marca {
     flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 44px;
     height: 44px;
+    border: 1px solid rgba(118, 28, 238, 0.2);
     border-radius: 8px;
     background: var(--icon-bg);
-    border: 1px solid rgba(163, 152, 122, 0.34);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.beneficio-marca {
+    font-size: 20px;
 }
 
 .card p {
@@ -214,6 +342,13 @@ h2::after {
 #como-funciona .card p {
     color: var(--text-main);
     font-weight: 600;
+}
+
+.section-acao {
+    width: min(1120px, 100%);
+    margin: 28px auto 0;
+    display: flex;
+    justify-content: center;
 }
 
 #beneficios .card {
@@ -249,8 +384,36 @@ h2::after {
     }
 
     #como-funciona .cards,
-    #beneficios .cards {
+    #beneficios .cards,
+    .sobre-recursos {
         grid-template-columns: 1fr;
+    }
+
+    .sobre-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre-painel {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 0 20px;
+    }
+
+    .sobre-metrica {
+        padding: 20px 12px;
+    }
+
+    .sobre-metrica + .sobre-metrica {
+        border-top: 0;
+        border-left: 1px solid rgba(163, 152, 122, 0.34);
+    }
+
+    .sobre-recursos {
+        margin-top: 32px;
+    }
+
+    .recurso {
+        min-height: auto;
     }
 }
 
@@ -281,5 +444,19 @@ h2::after {
     #logo img {
         height: 62px;
         max-width: 220px;
+    }
+
+    #sobre {
+        padding-top: 72px;
+    }
+
+    .sobre-painel {
+        display: block;
+        padding: 8px 22px;
+    }
+
+    .sobre-metrica + .sobre-metrica {
+        border-top: 1px solid rgba(163, 152, 122, 0.34);
+        border-left: 0;
     }
 }
