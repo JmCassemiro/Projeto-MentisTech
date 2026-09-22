@@ -40,7 +40,7 @@ scikit-learn==1.8.0
 scipy==1.17.1
 sentry-sdk==2.56.0
 shellingham==1.5.4
-SQLAlchemy==2.0.36
+SQLAlchemy==2.0.54
 starlette==1.0.0
 threadpoolctl==3.6.0
 typer==0.24.1

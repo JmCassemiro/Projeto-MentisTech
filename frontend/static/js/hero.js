@@ -378,18 +378,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             subject: 'Contato pelo painel',
-            user_id: currentUser.id,
-            user_name: currentUser.name,
-            user_email: currentUser.email,
-            email_to: 'inatelc317.mentistech.test@gmail.com',
             message: duvida
         };
+        const accessToken = localStorage.getItem('access_token');
+        const tokenType = localStorage.getItem('token_type') || 'bearer';
 
         try {
             const response = await fetch('/email/send', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `${tokenType} ${accessToken}`
                 },
                 body: JSON.stringify(payload)
             });

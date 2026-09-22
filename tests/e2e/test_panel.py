@@ -62,8 +62,11 @@ def test_painel_envia_mensagem_de_contato(authenticated_page):
     mock_panel_apis(page)
     sent_payload = {}
 
+    sent_headers = {}
+
     def handle_email(route):
         sent_payload.update(route.request.post_data_json)
+        sent_headers.update(route.request.headers)
         route.fulfill(json={"message": "Email enviado"})
 
     page.route("**/email/send", handle_email)
@@ -72,8 +75,11 @@ def test_painel_envia_mensagem_de_contato(authenticated_page):
     page.get_by_role("button", name="Enviar mensagem").click()
 
     expect(page.locator("#contato-feedback")).to_have_text("Mensagem enviada com sucesso!")
-    assert sent_payload["user_id"] == 7
-    assert sent_payload["message"] == "Preciso de apoio com meu resultado."
+    assert sent_payload == {
+        "subject": "Contato pelo painel",
+        "message": "Preciso de apoio com meu resultado.",
+    }
+    assert sent_headers["authorization"].lower().startswith("bearer ")
 
 
 def test_logout_limpa_sessao(authenticated_page):
